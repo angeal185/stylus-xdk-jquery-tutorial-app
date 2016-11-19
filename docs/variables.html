@@ -1,0 +1,88 @@
+<main class="content">
+    <div class="docs">
+       <h1>Variables</h1>
+<p>We may assign expressions to variables and use them throughout our stylesheet:</p>
+<div class="highlighter-rouge"><pre class="highlight"><code> font-size = 14px
+
+ body
+   font font-size Arial, sans-serif
+</code></pre>
+</div>
+<p>Compiles to:</p>
+<div class="highlighter-rouge"><pre class="highlight"><code> body {
+   font: 14px Arial, sans-serif;
+ }
+</code></pre>
+</div>
+<p>Variables can even consist of an expression list:</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>font-size = 14px
+font = font-size "Lucida Grande", Arial
+
+body
+  font font, sans-serif
+</code></pre>
+</div>
+<p>Compiles to:</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>body {
+  font: 14px "Lucida Grande", Arial, sans-serif;
+}
+</code></pre>
+</div>
+<p>Identifiers (variable names, functions, etc.) may also include the <code class="highlighter-rouge">$</code> character. For example:</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>$font-size = 14px
+body {
+  font: $font-size sans-serif;
+}
+</code></pre>
+</div>
+<h2 id="property-lookup">Property Lookup</h2>
+<p>Another cool feature unique to Stylus is the ability to reference
+ properties defined <em>without</em> assigning their values to variables. A great example of this is the logic required for vertically and horizontally center an element (typically done using percentages and negative margins, as follows):</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> #logo
+   position: absolute
+   top: 50%
+   left: 50%
+   width: w = 150px
+   height: h = 80px
+   margin-left: -(w / 2)
+   margin-top: -(h / 2)
+</code></pre>
+</div>
+<p>Instead of assigning the variables <code class="highlighter-rouge">w</code> and <code class="highlighter-rouge">h</code>, we can simply prepend the <code class="highlighter-rouge">@</code>
+  character to the property name to access the value:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> #logo
+   position: absolute
+   top: 50%
+   left: 50%
+   width: 150px
+   height: 80px
+   margin-left: -(@width / 2)
+   margin-top: -(@height / 2)
+</code></pre>
+</div>
+<p>Another use-case is conditionally defining properties within mixins based on the existence of others . In the following example, we apply a default <code class="highlighter-rouge">z-index</code> of <code class="highlighter-rouge">1</code>—but <em>only</em> if <code class="highlighter-rouge">z-index</code> was not previously specified:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>  position()
+    position: arguments
+    z-index: 1 unless @z-index
+
+  #logo
+    z-index: 20
+    position: absolute
+
+  #logo2
+    position: absolute
+</code></pre>
+</div>
+<p>Property lookup will “bubble up” the stack until found, or return <code class="highlighter-rouge">null</code> if the property cannot be resolved. In the following example, <code class="highlighter-rouge">@color</code> will resolve to <code class="highlighter-rouge">blue</code>:</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>  body
+    color: red
+    ul
+      li
+        color: blue
+        a
+          background-color: @color
+</code></pre>
+</div></div></main>

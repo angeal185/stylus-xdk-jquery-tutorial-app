@@ -1,0 +1,22 @@
+<main class="content">
+    <div class="docs">
+     <h1>CSS Literal</h1>
+<p>If for any reason Stylus cannot accommodate a specific need, you can always resort to literal CSS with <code class="highlighter-rouge">@css</code>:</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>@css {
+    .ie-opacity {
+        filter: progid:DXImageTransform.Microsoft.Alpha(opacity=25);
+        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(opacity=25)";
+    }
+}
+</code></pre>
+</div>
+
+<p>Compiling to:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>.ie-opacity {        
+        filter: progid:DXImageTransform.Microsoft.Alpha(opacity=25);
+        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(opacity=25)";
+}
+</code></pre>
+</div></div></main>
+  

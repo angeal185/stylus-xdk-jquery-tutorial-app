@@ -1,0 +1,410 @@
+<main class="content">
+    <div class="docs">
+        <h1>Selectors</h1>
+<h2 id="indentation">Indentation</h2>
+<p>Stylus is “pythonic” (i.e. indentation-based). Whitespace is significant, so we substitute <code class="highlighter-rouge"><span class="p">{</span></code> and <code class="highlighter-rouge">}</code> with an <em>indent</em>, and an <em>outdent</em> as shown below:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>body
+  color white
+</code></pre>
+</div>
+
+<p>Which compiles to:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>body {
+  color: #fff;
+}
+</code></pre>
+</div>
+
+<p>If preferred, you can use colons to separate properties and values:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>body
+  color: white
+</code></pre>
+</div>
+
+<h2 id="rule-sets">Rule Sets</h2>
+
+<p>Stylus, just like CSS, allows you to define properties for several selectors at once through comma separation.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>textarea, input
+  border 1px solid #eee
+</code></pre>
+</div>
+
+<p>The same can be done with a newline:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>textarea
+input
+  border 1px solid #eee
+</code></pre>
+</div>
+
+<p>Both compile to:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>textarea,
+input {
+  border: 1px solid #eee;
+}
+</code></pre>
+</div>
+
+<p><strong>The only exception to this rule</strong> are selectors that look like properties. For example, the following <code class="highlighter-rouge">foo bar baz</code> might be a property <strong>or</strong> a selector:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>foo bar baz
+&gt; input
+  border 1px solid
+</code></pre>
+</div>
+
+<p>So for this reason (or simply if preferred), we may trail with a comma:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>foo bar baz,
+form input,
+&gt; a
+  border 1px solid
+</code></pre>
+</div>
+
+<h2 id="parent-reference">Parent Reference</h2>
+
+<p>The <code class="highlighter-rouge">&amp;</code> character references the parent selector(s). In the example below our two selectors (<code class="highlighter-rouge">textarea</code> and <code class="highlighter-rouge">input</code>) both alter the <code class="highlighter-rouge">color</code> on the <code class="highlighter-rouge">:hover</code> pseudo selector.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>textarea
+input
+  color #A7A7A7
+  &amp;:hover
+    color #000
+</code></pre>
+</div>
+
+<p>Compiles to:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>textarea,
+input {
+  color: #a7a7a7;
+}
+textarea:hover,
+input:hover {
+  color: #000;
+}
+</code></pre>
+</div>
+
+<p>Below is an example providing a simple <code class="highlighter-rouge">2px</code> border for Internet Explorer utilizing the parent reference within a mixin:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>  box-shadow()
+    -webkit-box-shadow arguments
+    -moz-box-shadow arguments
+    box-shadow arguments
+    html.ie8 &amp;,
+    html.ie7 &amp;,
+    html.ie6 &amp;
+      border 2px solid arguments[length(arguments) - 1]
+
+  body
+    #login
+      box-shadow 1px 1px 3px #eee
+</code></pre>
+</div>
+
+<p>Yielding:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>  body #login {
+    -webkit-box-shadow: 1px 1px 3px #eee;
+    -moz-box-shadow: 1px 1px 3px #eee;
+    box-shadow: 1px 1px 3px #eee;
+  }
+  html.ie8 body #login,
+  html.ie7 body #login,
+  html.ie6 body #login {
+    border: 2px solid #eee;
+  }
+</code></pre>
+</div>
+
+<p>If you’d need to use the ampersand symbol in a selector without it behaving like a parent reference, you can just escape it:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>.foo[title*='\&amp;']
+// =&gt; .foo[title*='&amp;']
+</code></pre>
+</div>
+
+<h2 id="partial-reference">Partial Reference</h2>
+
+<p><code class="highlighter-rouge">^[N]</code> anywhere in a selector, where <code class="highlighter-rouge">N</code> can be a number, represents a partial reference.</p>
+
+<p>Partial reference works similar to the parent reference, but while parent reference contains the whole selector, partial selectors contain only the first merged <code class="highlighter-rouge">N</code> levels of the nested selectors, so you could access those nesting levels individually.</p>
+
+<p>The <code class="highlighter-rouge">^[0]</code> would give you the selector from the first level, the <code class="highlighter-rouge">^[1]</code> would give you the rendered selector from the second level and so on:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>.foo
+  &amp;__bar
+    width: 10px
+
+    ^[0]:hover &amp;
+      width: 20px
+</code></pre>
+</div>
+
+<p>would be rendered as</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>.foo__bar {
+  width: 10px;
+}
+.foo:hover .foo__bar {
+  width: 20px;
+}
+</code></pre>
+</div>
+
+<p>Negative values are counting from the end, so ^[-1] would give you the last selector from the chain before <code class="highlighter-rouge">&amp;</code>:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>.foo
+  &amp;__bar
+    &amp;_baz
+      width: 10px
+
+      ^[-1]:hover &amp;
+        width: 20px
+</code></pre>
+</div>
+
+<p>would be rendered as</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>.foo__bar_baz {
+  width: 10px;
+}
+.foo__bar:hover .foo__bar_baz {
+  width: 20px;
+}
+</code></pre>
+</div>
+
+<p>Negative values are especially helpful for usage inside mixins when you don’t know at what nesting level you’re calling it.</p>
+
+<hr />
+
+<p>Note that partial reference contain the whole rendered chain of selectors until the given nesting level, not the “part” of the selector.</p>
+
+<h3 id="ranges-in-partial-references">Ranges in partial references</h3>
+
+<p><code class="highlighter-rouge">^[N..M]</code> anywhere in a selector, where both <code class="highlighter-rouge">N</code> and <code class="highlighter-rouge">M</code> can be numbers, represents a partial reference.</p>
+
+<p>If you’d have a case when you’d need to get the raw part of the selector, or to get the range of parts programmatically, you could use ranges inside partial reference.</p>
+
+<p>If the range would start from the positive value, the result won’t contain the selectors of the previous levels and you’d get the result as if the selectors of those levels were inserted at the root of the stylesheet with the combinators omitted:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>.foo
+  &amp; .bar
+    width: 10px
+
+    ^[0]:hover ^[1..-1]
+      width: 20px
+</code></pre>
+</div>
+
+<p>would be rendered as</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>.foo .bar {
+  width: 10px;
+}
+.foo:hover .bar {
+  width: 20px;
+}
+</code></pre>
+</div>
+
+<p>One number in the range would be the start index, the second — the end index. Note that the order of those numbers won’t matter as the selectors would always render from the first levels to the last, so <code class="highlighter-rouge">^[1..-1]</code> would be equal to the <code class="highlighter-rouge">^[-1..1]</code>.</p>
+
+<p>When both numbers are equal, the result would be just one raw level of a selector, so you could replace <code class="highlighter-rouge">^[1..-1]</code> in a previous example to <code class="highlighter-rouge">^[-1..-1]</code>, and it would be equal to the same last one raw selector, but would be more reliable if used inside mixins.</p>
+
+<h2 id="initial-reference">Initial Reference</h2>
+
+<p>The <code class="highlighter-rouge">~/</code> characters at the start of a selector can be used to point at the selector at the first nesting and could be considered as a shortcut to <code class="highlighter-rouge">^[0]</code>. The only drawback is that you can use initial reference only at the start of a selector:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>.block
+  &amp;__element
+    ~/:hover &amp;
+      color: red
+</code></pre>
+</div>
+
+<p>Would be rendered as</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>.block:hover .block__element {
+  color: #f00;
+}
+</code></pre>
+</div>
+
+<h2 id="relative-reference">Relative Reference</h2>
+
+<p>The <code class="highlighter-rouge">../</code> characters at the start of a selector mark a relative reference, which points to the previous to the <code class="highlighter-rouge">&amp;</code> compiled selector. You can nest relative reference: <code class="highlighter-rouge">../../</code> to get deeper levels, but note that it can be used only at the start of the selector.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>.foo
+  .bar
+    width: 10px
+
+    &amp;,
+    ../ .baz
+      height: 10px
+</code></pre>
+</div>
+
+<p>would be rendered as</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>.foo .bar {
+  width: 10px;
+}
+.foo .bar,
+.foo .baz {
+  height: 10px;
+}
+</code></pre>
+</div>
+
+<p>Relative references can be considered as shortcuts to the partial references with ranges like <code class="highlighter-rouge">^[0..-(N + 1)]</code> where the <code class="highlighter-rouge">N</code> is the number of relative references used.</p>
+
+<h2 id="root-reference">Root Reference</h2>
+
+<p>The <code class="highlighter-rouge">/</code> character at the start of a selector is a root reference. It references the root context and this means the selector won’t prepend the parent’s selector to it (unless you would use it with <code class="highlighter-rouge">&amp;</code>). It is helpful when you need to write some styles both to some nested selector and to another one, not in the current scope.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>textarea
+input
+  color #A7A7A7
+  &amp;:hover,
+  /.is-hovered
+    color #000
+</code></pre>
+</div>
+
+<p>Compiles to:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>textarea,
+input {
+  color: #a7a7a7;
+}
+textarea:hover,
+input:hover,
+.is-hovered {
+  color: #000;
+}
+</code></pre>
+</div>
+
+<h2 id="selector-bif">selector() bif</h2>
+
+<p>You can use the built-in <code class="highlighter-rouge">selector()</code> to get the current compiled selector. Could be used inside mixins for checks or other clever things.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>.foo
+  selector()
+// =&gt; '.foo'
+
+.foo
+  &amp;:hover
+    selector()
+// '.foo:hover'
+</code></pre>
+</div>
+
+<p>This bif could also accept an optional string argument, in this case it would return the compiled selector. Note that it wouldn’t prepend the selector of the current scope in case it don’t have any <code class="highlighter-rouge">&amp;</code> symbols.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>.foo
+  selector('.bar')
+// =&gt; '.bar'
+
+.foo
+  selector('&amp;:hover')
+// '.foo:hover'
+</code></pre>
+</div>
+
+<h3 id="multiple-values-for-selector-bif">Multiple values for <code class="highlighter-rouge">selector()</code> bif</h3>
+
+<p><code class="highlighter-rouge">selector()</code> bif can accept multiple values or a comma-separated list in order to create a nested selector structure easier.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="p">{</span><span class="err">selector('.a',</span><span class="w"> </span><span class="err">'.b',</span><span class="w"> </span><span class="err">'.c,</span><span class="w"> </span><span class="err">.d')</span><span class="p">}</span><span class="w">
+  </span><span class="err">color:</span><span class="w"> </span><span class="err">red</span><span class="w">
+</span></code></pre>
+</div>
+
+<p>would be equal to the</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>.a
+  .b
+    .c,
+    .d
+      color: red
+</code></pre>
+</div>
+
+<p>and would be rendered as</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>.a .b .c,
+.a .b .d {
+  color: #f00;
+}
+</code></pre>
+</div>
+
+<h2 id="selectors-bif">selectors() bif</h2>
+
+<p>This bif returns a comma-separated list of nested selectors for the current level:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>.a
+  .b
+    &amp;__c
+      content: selectors()
+</code></pre>
+</div>
+
+<p>would be rendered as</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>.a .b__c {
+  content: '.a', '&amp; .b', '&amp;__c';
+}
+</code></pre>
+</div>
+
+<h2 id="disambiguation">Disambiguation</h2>
+
+<p>Expressions such as <code class="highlighter-rouge">margin - n</code> could be interpreted both as a subtraction operation, as well as a property with an unary minus. To disambiguate, wrap the expression with parens:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>pad(n)
+  margin (- n)
+
+body
+  pad(5px)
+</code></pre>
+</div>
+
+<p>Compiles to:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>body {
+  margin: -5px;
+}
+</code></pre>
+</div>
+
+<p>However, this is only true in functions (since functions act both as mixins, or calls with return values).</p>
+
+<p>For example, the following is fine (and yields the same results as above):</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>body
+  margin -5px
+</code></pre>
+</div>
+
+<p>Have weird property values that Stylus can’t process? <code class="highlighter-rouge">unquote()</code> can help you out:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>filter unquote('progid:DXImageTransform.Microsoft.BasicImage(rotation=1)')
+</code></pre>
+</div>
+
+<p>Yields:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>filter progid:DXImageTransform.Microsoft.BasicImage(rotation=1)
+</code></pre>
+</div></div></main>

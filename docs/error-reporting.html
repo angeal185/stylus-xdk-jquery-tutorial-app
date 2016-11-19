@@ -1,0 +1,52 @@
+<main class="content">
+    <div class="docs">
+        <h1>Error Reporting</h1>
+        <p>Stylus has fantastic error reporting built-in for syntax, parse, and evaluation errors—complete with stack traces, line numbers, and filenames.</p>
+        <h2 id="parse-error">Parse Error</h2>
+        <p>Parse error example:</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code> body
+   form input
+     == padding 5px
+</code></pre> </div>
+        <p>Yielding:</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>  ParseError: test.styl:3:16
+    1| body
+    2|    form input
+    3|      == padding 5px
+ ---------------------^
+    4|
+
+  illegal unary "==", missing left-hand operand
+</code></pre> </div>
+        <h2 id="evaluation-error">Evaluation Error</h2>
+        <p>This “runtime” or evaluation error is caused by passing a string to <code class="highlighter-rouge">border-radius()</code>, instead of the expected <code class="highlighter-rouge">Unit</code> (by using our helper <code class="highlighter-rouge">ensure(n, 'unit')</code>).</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>  ensure(val, type)
+    unless val is a type
+      error('expected a ' + type + ', but got ' + typeof(val))
+
+  border-radius(n)
+    ensure(n, 'unit')
+    -webkit-border-radius n
+    -moz-border-radius n
+    border-radius n
+
+  body
+    border-radius '5px'
+</code></pre> </div>
+        <p>Yielding:</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>  Error: test.styl:3:62
+    1| ensure(val, type)
+    2|     unless val is a type
+    3|       error('expected a ' + type + ', but got ' + typeof(val))
+ -------------------------------------------------------------------^
+    4|
+    5| border-radius(n)
+    6|   ensure(n, 'unit')
+
+  expected a unit, but got string
+      at ensure() (test.styl:2:17)
+      at border-radius() (test.styl:6:16)
+      at "body" (test.styl:10:18)
+</code></pre> </div>
+    </div>
+</main>

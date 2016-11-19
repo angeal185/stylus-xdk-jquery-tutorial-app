@@ -1,0 +1,164 @@
+<main class="content">
+	<div class="docs">
+		<h1>@import and @require</h1>
+<p>Stylus supports both literal <strong>@import</strong> for CSS, as well as dynamic importing or requiring of other Stylus sheets.</p>
+
+<h2 id="literal-css">Literal CSS</h2>
+
+<p>Any filename with the extension <code class="highlighter-rouge">.css</code> will become a literal. For example:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> @import "reset.css"
+</code></pre>
+</div>
+
+<p>Render the literal CSS <strong>@import</strong> shown below:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> @import "reset.css"
+</code></pre>
+</div>
+
+<h2 id="stylus-import">Stylus Import</h2>
+
+<p><em>Disclaimer: In all places the <strong>@import</strong> is used with Stylus sheets, the <strong>@require</strong> could be used</em></p>
+
+<p>When using <strong>@import</strong> without the <code class="highlighter-rouge">.css</code> extension, it’s assumed to be a Stylus sheet (e.g., <code class="highlighter-rouge">@import "mixins/border-radius"</code>).</p>
+
+<p><strong>@import</strong> works by iterating an array of directories, and checking if this file lives in any of them (similar to node’s <code class="highlighter-rouge">require.paths</code>). This array defaults to a single path, which is derived from the <code class="highlighter-rouge">filename</code> option’s <code class="highlighter-rouge">dirname</code>. So, if your filename is <code class="highlighter-rouge">/tmp/testing/stylus/main.styl</code>, then import will look in <code class="highlighter-rouge">/tmp/testing/stylus/</code>.</p>
+
+<p><strong>@import</strong> also supports index styles. This means when you <code class="highlighter-rouge">@import blueprint</code>, it will resolve <strong>either</strong> <code class="highlighter-rouge">blueprint.styl</code> <strong>or</strong> <code class="highlighter-rouge">blueprint/index.styl</code>.  This is really useful for libraries that want to expose all their features, while still allowing feature subsets to be imported.</p>
+
+<p>For example, a common lib structure might be:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>./tablet
+  |-- index.styl
+  |-- vendor.styl
+  |-- buttons.styl
+  |-- images.styl
+</code></pre>
+</div>
+
+<p>In the example below, we set the <code class="highlighter-rouge">paths</code> options to provide additional paths to Stylus. Within <code class="highlighter-rouge">./test.styl</code>, we could then <code class="highlighter-rouge">@import "mixins/border-radius"</code>, or <code class="highlighter-rouge">@import "border-radius"</code> (since <code class="highlighter-rouge">./mixins</code> is exposed to Stylus).</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>  /**
+   * Module dependencies.
+   */
+
+  var stylus = require('../')
+    , str = require('fs').readFileSync(__dirname + '/test.styl', 'utf8');
+
+  var paths = [
+      __dirname
+    , __dirname + '/mixins'
+  ];
+
+  stylus(str)
+    .set('filename', __dirname + '/test.styl')
+    .set('paths', paths)
+    .render(function(err, css){
+      if (err) throw err;
+      console.log(css);
+    });
+</code></pre>
+</div>
+
+<h2 id="require">Require</h2>
+
+<p>Along with <code class="highlighter-rouge">@import</code>, Stylus also has <code class="highlighter-rouge">@require</code>. It works almost in the same way, with the exception of importing any given file only once.</p>
+
+<h2 id="block-level-import"></a>Block-level import</h2>
+
+<p>Stylus supports block-level import. It means that you can use <code class="highlighter-rouge">@import</code> not only at root level, but also nested inside other selectors or at-rules.</p>
+
+<p>If you have a <code class="highlighter-rouge">bar.styl</code> with this code:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>.bar
+  width: 10px;
+</code></pre>
+</div>
+
+<p>Then you can import it inside a <code class="highlighter-rouge">foo.styl</code> like this:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>.foo
+  @import 'bar.styl'
+
+@media screen and (min-width: 640px)
+  @import 'bar.styl'
+</code></pre>
+</div>
+
+<p>And you’ll get this compiled CSS as a result:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>.foo .bar {
+  width: 10px;
+}
+@media screen and (min-width: 640px) {
+  .bar {
+    width: 10px;
+  }
+}
+</code></pre>
+</div>
+
+<h2 id="file-globbing">File globbing</h2>
+
+<p>Stylus supports <a href="https://github.com/isaacs/node-glob#readme">globbing</a>. With it you could import many files using a file mask:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>@import 'product/*'
+</code></pre>
+</div>
+
+<p>This would import all the stylus sheets from the <code class="highlighter-rouge">product</code> directory in such structure:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>./product
+  |-- body.styl
+  |-- foot.styl
+  |-- head.styl
+</code></pre>
+</div>
+
+<p>Note that this works with <code class="highlighter-rouge">@require</code> too, so if you would have also a <code class="highlighter-rouge">./product/index.styl</code> with this content:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>@require 'head'
+@require 'body'
+@require 'foot'
+</code></pre>
+</div>
+
+<p>then <code class="highlighter-rouge">@require 'product/*'</code> would include each individual sheet only once.</p>
+
+<h2 id="resolving-relative-urls-inside-imports">Resolving relative urls inside imports</h2>
+
+<p>By default Stylus doesn’t resolve the urls in imported <code class="highlighter-rouge">.styl</code> files, so if you’d happen to have a <code class="highlighter-rouge">foo.styl</code> with <code class="highlighter-rouge">@import "bar/bar.styl"</code> which would have <code class="highlighter-rouge">url("baz.png")</code>, it would be <code class="highlighter-rouge">url("baz.png")</code> too in a resulting CSS.</p>
+
+<p>But you can alter this behavior by using <code class="highlighter-rouge">--resolve-url</code> (or just <code class="highlighter-rouge">-r</code>) CLI option to get <code class="highlighter-rouge">url("bar/baz.png")</code> in your resulting CSS.</p>
+
+<h2 id="javascript-import-api">JavaScript Import API</h2>
+
+<p>When using the <code class="highlighter-rouge">.import(path)</code> method, these imports are deferred until evaluation:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>   var stylus = require('../')
+     , str = require('fs').readFileSync(__dirname + '/test.styl', 'utf8');
+
+   stylus(str)
+     .set('filename', __dirname + '/test.styl')
+     .import('mixins/vendor')
+     .render(function(err, css){
+     if (err) throw err;
+     console.log(css);
+   });
+</code></pre>
+</div>
+
+<p>The following statement…</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> @import 'mixins/vendor'
+</code></pre>
+</div>
+
+<p>…is equivalent to…</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> .import('mixins/vendor')
+</code></pre>
+</div>
+</div>
+</main>

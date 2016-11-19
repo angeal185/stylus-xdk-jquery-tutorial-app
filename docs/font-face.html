@@ -1,0 +1,28 @@
+<main class="content">
+    <div class="docs">
+        <h1>@font-face</h1>
+<p>The <code class="highlighter-rouge">@font-face</code> at-rule expects as you would expect. Simply add a block of properties after it, like so:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> @font-face
+   font-family Geo
+   font-style normal
+   src url(fonts/geo_sans_light/GensansLight.ttf)
+
+ .ingeo
+   font-family Geo
+</code></pre>
+</div>
+
+<p>Yielding:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>  @font-face {
+    font-family: Geo;
+    font-style: normal;
+    src: url("fonts/geo_sans_light/GensansLight.ttf");
+  }
+  .ingeo {
+    font-family: Geo;
+  }
+</code></pre>
+</div></div>
+</main>

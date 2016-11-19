@@ -1,0 +1,38 @@
+<main class="content">
+	<div class="docs">
+		<h1>Char Escaping</h1>
+<p>Stylus lets you escape characters. This effectively turns them into identifiers, allowing them to be rendered as literals.</p>
+
+<p>For example:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> body
+   padding 1 \+ 2
+</code></pre>
+</div>
+
+<p>Compiles to:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> body {
+   padding: 1 + 2;
+ }
+</code></pre>
+</div>
+
+<p>Note that Stylus requires that <code class="highlighter-rouge">/</code> is parenthesized when used in a property:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>body
+  font 14px/1.4
+  font (14px/1.4)
+</code></pre>
+</div>
+
+<p>yields:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>body {
+  font: 14px/1.4;
+  font: 10px;
+}
+</code></pre>
+</div>
+</div>
+</main>

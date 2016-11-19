@@ -1,0 +1,28 @@
+<main class="content">
+    <div class="docs">
+    <h1>Sourcemaps</h1>
+<p>Stylus supports basic sourcemaps according to the <a href="https://docs.google.com/document/d/1U1RGAehQwRypUTovF1KRlpiOFze0b-_2gc6fAH0KY0k">Sourcemap v3 spec</a></p>
+<h2 id="create-a-sourcemap">Create a sourcemap</h2>
+<p>Pass the <code class="highlighter-rouge">--sourcemap</code> flag (or <code class="highlighter-rouge">-m</code>) with a Stylus file. This will create a <code class="highlighter-rouge">style.css</code> file, and a <code class="highlighter-rouge">style.css.map</code> file as siblings to your <code class="highlighter-rouge">style.styl</code> and place a sourcemap link at the bottom of <code class="highlighter-rouge">style.css</code> to your sourcemap.</p>
+<p><code class="highlighter-rouge">stylus -m style.styl</code></p>
+<p>You can also run this command while watching a file. For instance: <code class="highlighter-rouge">stylus -w -m style.styl</code>. This will update your sourcemap everytime you save.</p>
+<h2 id="javascript-api">JavaScript API</h2>
+<p>Set the <code class="highlighter-rouge">sourcemap</code> setting with an options object or a boolean value:</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>var stylus = require('stylus');
+var style = stylus(str)
+  .set('filename', 'file.styl')
+  .set('sourcemap', options);
+
+style.render(function(err, css) {
+  // generated sourcemap object
+  console.log(style.sourcemap);
+});
+</code></pre>
+</div>
+<h3 id="options">Options</h3>
+<div class="highlighter-rouge"><pre class="highlight"><code>`comment`     Adds a comment with the `sourceMappingURL` to the generated CSS (default: `true`)
+`inline`      Inlines the sourcemap with full source text in base64 format (default: `false`)
+`sourceRoot`  "sourceRoot" property of the generated sourcemap
+`basePath`    Base path from which sourcemap and all sources are relative (default: `.`)
+</code></pre>
+</div></div></main>

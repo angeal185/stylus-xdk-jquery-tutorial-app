@@ -1,0 +1,39 @@
+<main class="content">
+    <div class="docs">
+        <h1>Introspection API</h1>
+<p>Stylus supports an introspection API. This allows mixins and functions to reflect relative to the caller, etc.</p>
+<h2 id="mixin">mixin</h2>
+<p>The <code class="highlighter-rouge">mixin</code> local variable is automatically assigned within function bodies.
+  It contains the string <code class="highlighter-rouge">root</code> if the function was called at the root
+  level, or <code class="highlighter-rouge">block</code> indicating otherwise, and finally <code class="highlighter-rouge">false</code> if the invoked function expects a return value.</p>
+
+<p>In the following example, we define <code class="highlighter-rouge">reset()</code> to alter its behaviour depending on whether it’s mixed into root, into another block, or into a return value, as used in the <code class="highlighter-rouge">foo</code> property below:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>  reset()
+    if mixin == 'root'
+      got
+        root true
+    else if mixin
+      got 'a mixin'
+    else
+      'not a mixin'
+
+  reset()
+
+  body
+    reset()
+    foo reset()
+</code></pre>
+</div>
+
+<p>Compiles to:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>    got {
+      root: true;
+    }
+    body {
+      foo: "not a mixin";
+      got: "a mixin";
+    }
+</code></pre>
+</div></div></main>

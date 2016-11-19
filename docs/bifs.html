@@ -1,0 +1,1011 @@
+<main class="content">
+    <div class="docs">
+        <h1>Built-in Functions</h1>
+        <h2 id="redcolor-value">red(color[, value])</h2>
+        <p>Return the red component of the given <code class="highlighter-rouge">color</code>, or set the red component to the optional second <code class="highlighter-rouge">value</code> argument.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code> red(#c00)
+ // =&gt; 204
+
+ red(#000, 255)
+ // =&gt; #f00
+</code></pre> </div>
+        <h2 id="greencolor-value">green(color[, value])</h2>
+        <p>Return the green component of the given <code class="highlighter-rouge">color</code>, or set the green component to the optional second <code class="highlighter-rouge">value</code> argument.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code> green(#0c0)
+ // =&gt; 204
+
+ green(#000, 255)
+ // =&gt; #0f0
+</code></pre> </div>
+        <h2 id="bluecolor-value">blue(color[, value])</h2>
+        <p>Return the blue component of the given <code class="highlighter-rouge">color</code>, or set the blue component to the optional second <code class="highlighter-rouge">value</code> argument.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code> blue(#00c)
+ // =&gt; 204
+
+ blue(#000, 255)
+ // =&gt; #00f
+</code></pre> </div>
+        <h2 id="alphacolor-value">alpha(color[, value])</h2>
+        <p>Return the alpha component of the given <code class="highlighter-rouge">color</code>, or set the alpha component to the optional second <code class="highlighter-rouge">value</code> argument.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>  alpha(#fff)
+  // =&gt; 1
+
+  alpha(rgba(0,0,0,0.3))
+  // =&gt; 0.3
+
+  alpha(#fff, 0.5)
+  // =&gt; rgba(255,255,255,0.5)
+</code></pre> </div>
+        <h2 id="darkcolor">dark(color)</h2>
+        <p>Check if <code class="highlighter-rouge">color</code> is dark:</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>  dark(black)
+  // =&gt; true
+
+  dark(#005716)
+  // =&gt; true
+
+  dark(white)
+  // =&gt; false
+</code></pre> </div>
+        <h2 id="lightcolor">light(color)</h2>
+        <p>Check if <code class="highlighter-rouge">color</code> is light:</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>light(black)
+// =&gt; false
+
+light(white)
+// =&gt; true
+
+light(#00FF40)
+// =&gt; true
+</code></pre> </div>
+        <h2 id="huecolor-value">hue(color[, value])</h2>
+        <p>Return the hue of the given <code class="highlighter-rouge">color</code>, or set the hue component to the optional second <code class="highlighter-rouge">value</code> argument.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>hue(hsl(50deg, 100%, 80%))
+// =&gt; 50deg
+
+hue(#00c, 90deg)
+// =&gt; #6c0
+</code></pre> </div>
+        <h2 id="saturationcolor-value">saturation(color[, value])</h2>
+        <p>Return the saturation of the given <code class="highlighter-rouge">color</code>, or set the saturation component to the optional second <code class="highlighter-rouge">value</code> argument.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>saturation(hsl(50deg, 100%, 80%))
+// =&gt; 100%
+
+saturation(#00c, 50%)
+// =&gt; #339
+</code></pre> </div>
+        <h2 id="lightnesscolor-value">lightness(color[, value])</h2>
+        <p>Return the lightness of the given <code class="highlighter-rouge">color</code>, or set the lightness component to the optional second <code class="highlighter-rouge">value</code> argument.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>lightness(hsl(50deg, 100%, 80%))
+// =&gt; 80%
+
+lightness(#00c, 80%)
+// =&gt; #99f
+</code></pre> </div>
+        <h2 id="pushexpr-args"><push(expr, args…)></h2>
+        <p>Push the given <code class="highlighter-rouge">args</code> to <code class="highlighter-rouge">expr</code>.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code> nums = 1 2
+ push(nums, 3, 4, 5)
+
+ nums
+ // =&gt; 1 2 3 4 5
+</code></pre> </div>
+        <p>Aliased as <code class="highlighter-rouge">append()</code></p>
+        <h2 id="popexpr">pop(expr)</h2>
+        <p>Pop a value from <code class="highlighter-rouge">expr</code>.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code> nums = 4 5 3 2 1
+ num = pop(nums)
+
+ nums
+ // =&gt; 4 5 3 2
+ num
+ // =&gt; 1
+</code></pre> </div>
+        <h2 id="shiftexpr">shift(expr)</h2>
+        <p>Shift an element from <code class="highlighter-rouge">expr</code>.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code> nums = 4 5 3 2 1
+ num = shift(nums)
+
+ nums
+ // =&gt; 5 3 2 1
+ num
+ // =&gt; 4
+</code></pre> </div>
+        <h2 id="unshiftexpr-args">unshift(expr, args…)</h2>
+        <p>Unshift the given <code class="highlighter-rouge">args</code> to <code class="highlighter-rouge">expr</code>.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code> nums = 4 5
+ unshift(nums, 3, 2, 1)
+
+ nums
+ // =&gt; 1 2 3 4 5
+</code></pre> </div>
+        <p>Aliased as <code class="highlighter-rouge">prepend()</code></p>
+        <h2 id="indexlist-value">index(list, value)</h2>
+        <p>Returns the index (zero-based) of a <code class="highlighter-rouge">value</code> within a <code class="highlighter-rouge">list</code>.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>list = 1 2 3
+
+index(list, 2)
+// =&gt; 1
+
+index(1px solid red, red)
+// =&gt; 2
+</code></pre> </div>
+        <h2 id="keyspairs">keys(pairs)</h2>
+        <p>Return keys in the given <code class="highlighter-rouge">pairs</code>:</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code> pairs = (one 1) (two 2) (three 3)
+ keys(pairs)
+ // =&gt; one two three
+</code></pre> </div>
+        <h2 id="valuespairs">values(pairs)</h2>
+        <p>Return values in the given <code class="highlighter-rouge">pairs</code>:</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code> pairs = (one 1) (two 2) (three 3)
+ values(pairs)
+ // =&gt; 1 2 3
+</code></pre> </div>
+        <h2 id="list-separatorlist">list-separator(list)</h2>
+        <p>Return the separator of the given <code class="highlighter-rouge">list</code>.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code> list1 = a b c
+ list-separator(list1)
+ // =&gt; ' '
+
+ list2 = a, b, c
+ list-separator(list2)
+ // =&gt; ','
+</code></pre> </div>
+        <h2 id="typeofnode">typeof(node)</h2>
+        <p>Return type of <code class="highlighter-rouge">node</code> as a string.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>  type(12)
+  // =&gt; 'unit'
+
+  typeof(12)
+  // =&gt; 'unit'
+
+  typeof(#fff)
+  // =&gt; 'rgba'
+
+  type-of(#fff)
+  // =&gt; 'rgba'
+</code></pre> </div>
+        <p>Aliased as <code class="highlighter-rouge">type-of</code> and <code class="highlighter-rouge">type</code>.</p>
+        <h2 id="unitunit-type">unit(unit[, type])</h2>
+        <p>Return a string for the type of <code class="highlighter-rouge">unit</code> or an empty string, or assign the given <code class="highlighter-rouge">type</code> without unit conversion.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>unit(10)
+// =&gt; ''
+
+unit(15in)
+// =&gt; 'in'
+
+unit(15%, 'px')
+// =&gt; 15px
+
+unit(15%, px)
+// =&gt; 15px
+</code></pre> </div>
+        <h2 id="percentagenum">percentage(num)</h2>
+        <p>Convert a <code class="highlighter-rouge">num</code> to a percentage.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>percentage(.5)
+// =&gt; 50%
+
+percentage(4 / 100)
+// =&gt; 4%
+</code></pre> </div>
+        <h2 id="absunit">abs(unit)</h2>
+        <div class="highlighter-rouge"><pre class="highlight"><code>  abs(-5px)
+  // =&gt; 5px
+
+  abs(5px)
+  // =&gt; 5px
+</code></pre> </div>
+        <h2 id="ceilunit">ceil(unit)</h2>
+        <div class="highlighter-rouge"><pre class="highlight"><code>  ceil(5.5in)
+  // =&gt; 6in
+</code></pre> </div>
+        <h2 id="floorunit">floor(unit)</h2>
+        <div class="highlighter-rouge"><pre class="highlight"><code>  floor(5.6px)
+  // =&gt; 5px
+</code></pre> </div>
+        <h2 id="roundunit">round(unit)</h2>
+        <div class="highlighter-rouge"><pre class="highlight"><code>  round(5.5px)
+  // =&gt; 6px
+
+  round(5.4px)
+  // =&gt; 5px
+</code></pre> </div>
+        <p><strong>Note:</strong> All rounding functions can accept optional <code class="highlighter-rouge">precision</code> argument — you can pass the number of digits you want to save after the period:</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>  ceil(5.52px,1)
+  // =&gt; 5.6px
+
+  floor(5.57px,1)
+  // =&gt; 5.5px
+
+  round(5.52px,1)
+  // =&gt; 5.5px
+</code></pre> </div>
+        <h2 id="sinangle">sin(angle)</h2>
+        <p>Returns the value of sine for the given <code class="highlighter-rouge">angle</code>. If the angle is given as a degree unit, like <code class="highlighter-rouge">45deg</code>, it is treated as a degree, otherwise it is treated as radians.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>sin(30deg)
+// =&gt; 0.5
+
+sin(3*PI/4)
+// =&gt; 0.707106781
+</code></pre> </div>
+        <h2 id="cosangle">cos(angle)</h2>
+        <p>Returns the value of cosine for the given <code class="highlighter-rouge">angle</code>. If the angle is given as a degree unit, like <code class="highlighter-rouge">45deg</code>, it is treated as a degree, otherwise it is treated as radians.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>cos(180deg)
+// =&gt; -1
+</code></pre> </div>
+        <h2 id="tanangle">tan(angle)</h2>
+        <p>Returns the value of tangent for the given <code class="highlighter-rouge">angle</code>. If the angle is given as a degree unit, like <code class="highlighter-rouge">45deg</code>, it is treated as a degree, otherwise it is treated as radians.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>tan(45deg)
+// =&gt; 1
+
+tan(90deg)
+// =&gt; Infinity
+</code></pre> </div>
+        <h2 id="mina-b">min(a, b)</h2>
+        <div class="highlighter-rouge"><pre class="highlight"><code>  min(1, 5)
+  // =&gt; 1
+</code></pre> </div>
+        <h2 id="maxa-b">max(a, b)</h2>
+        <div class="highlighter-rouge"><pre class="highlight"><code>  max(1, 5)
+  // =&gt; 5
+</code></pre> </div>
+        <h2 id="evenunit">even(unit)</h2>
+        <div class="highlighter-rouge"><pre class="highlight"><code>  even(6px)
+  // =&gt; true
+</code></pre> </div>
+        <h2 id="oddunit">odd(unit)</h2>
+        <div class="highlighter-rouge"><pre class="highlight"><code>  odd(5mm)
+  // =&gt; true
+</code></pre> </div>
+        <h2 id="sumnums">sum(nums)</h2>
+        <div class="highlighter-rouge"><pre class="highlight"><code>  sum(1 2 3)
+  // =&gt; 6
+</code></pre> </div>
+        <h2 id="avgnums">avg(nums)</h2>
+        <div class="highlighter-rouge"><pre class="highlight"><code> avg(1 2 3)
+ // =&gt; 2
+</code></pre> </div>
+        <h2 id="rangestart-stop-step">range(start, stop[, step])</h2>
+        <p>Returns a list of units from <code class="highlighter-rouge">start</code> to <code class="highlighter-rouge">stop</code> (included) by given <code class="highlighter-rouge">step</code>. If <code class="highlighter-rouge">step</code> argument is omitted, it defaults to 1. The <code class="highlighter-rouge">step</code> must not be zero.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>range(1, 6)
+// equals to `1..6`
+// 1 2 3 4 5 6
+
+range(1, 6, 2)
+// 1 3 5
+
+range(-6, -1, 2)
+// -6 -4 -2
+
+range(1px, 3px, 0.5px)
+// 1px 1.5px 2px 2.5px 3px
+</code></pre> </div>
+        <p>It is most often used in <code class="highlighter-rouge">for</code> loops:</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>for i in range(10px, 50px, 10)
+  .col-{i}
+    width: i
+</code></pre> </div>
+        <p>Yields:</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>.col-10 {
+  width: 10px;
+}
+.col-20 {
+  width: 20px;
+}
+.col-30 {
+  width: 30px;
+}
+.col-40 {
+  width: 40px;
+}
+.col-50 {
+  width: 50px;
+}
+</code></pre> </div>
+        <h2 id="base-convertnum-base-width">base-convert(num, base, width)</h2>
+        <p>Returns a <code class="highlighter-rouge">Literal</code> <code class="highlighter-rouge">num</code> converted to the provided <code class="highlighter-rouge">base</code>, padded to <code class="highlighter-rouge">width</code> with zeroes (default width is 2)</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>base-convert(1, 10, 3)
+// =&gt; 001
+
+base-convert(14, 16, 1)
+// =&gt; e
+
+base-convert(42, 2)
+// =&gt; 101010
+</code></pre> </div>
+        <h2 id="matchpattern-string-flags">match(pattern, string[, flags])</h2>
+        <p>Retrieves the matches when matching a <code class="highlighter-rouge">val</code>(string) against a <code class="highlighter-rouge">pattern</code>(regular expression).</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>match('^(height|width)?([&lt;&gt;=]{1,})(.*)', 'height&gt;=1024px')
+// =&gt; 'height&gt;=1024px' 'height' '&gt;=' '1024px'
+
+match('^foo(?:bar)?', 'foo')
+// =&gt; 'foo'
+
+match('^foo(?:bar)?', 'foobar')
+// =&gt; 'foobar'
+
+match('^foo(?:bar)?', 'bar')
+// =&gt; null
+
+match('ain', 'The rain in SPAIN stays mainly in the plain')
+// =&gt; 'ain'
+
+match('ain', 'The rain in SPAIN stays mainly in the plain', g)
+// =&gt; 'ain' 'ain' 'ain'
+
+match('ain', 'The rain in SPAIN stays mainly in the plain', 'gi')
+// =&gt; 'ain' 'AIN' 'ain' 'ain'
+</code></pre> </div>
+        <h2 id="replacepattern-replacement-val">replace(pattern, replacement, val)</h2>
+        <p>Returns string with all matches of <code class="highlighter-rouge">pattern</code> replaced by <code class="highlighter-rouge">replacement</code> in given <code class="highlighter-rouge">val</code></p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>replace(i, e, 'griin')
+// =&gt; 'green'
+
+replace(i, e, griin)
+// =&gt; #008000
+</code></pre> </div>
+        <h2 id="joindelim-vals">join(delim, vals…)</h2>
+        <p>Join the given <code class="highlighter-rouge">vals</code> with <code class="highlighter-rouge">delim</code>.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>  join(' ', 1 2 3)
+  // =&gt; "1 2 3"
+
+  join(',', 1 2 3)
+  // =&gt; "1,2,3"
+
+  join(', ', foo bar baz)
+  // =&gt; "foo, bar, baz"
+
+  join(', ', foo, bar, baz)
+  // =&gt; "foo, bar, baz"
+
+  join(', ', 1 2, 3 4, 5 6)
+  // =&gt; "1 2, 3 4, 5 6"
+</code></pre> </div>
+        <h2 id="splitdelim-val">split(delim, val)</h2>
+        <p>The <code class="highlighter-rouge">split()</code>` method splits a string/ident into an array of strings by separating the string into substrings.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>split(_, bar1_bar2_bar3)
+// =&gt; bar1 bar2 bar3
+
+split(_, 'bar1_bar2_bar3')
+// =&gt; 'bar1' 'bar2' 'bar3'
+</code></pre> </div>
+        <h2 id="substrval-start-length">substr(val, start, length)</h2>
+        <p>The <code class="highlighter-rouge">substr()</code> method returns the characters in a string beginning at the specified location through the specified number of characters.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>substr(ident, 1, 2)
+// =&gt; de
+
+substr('string', 1, 2)
+// =&gt; 'tr'
+
+val = dredd
+substr(substr(val, 1), 0, 3)
+// =&gt; #f00
+</code></pre> </div>
+        <h2 id="sliceval-start-end">slice(val, start[, end])</h2>
+        <p>The <code class="highlighter-rouge">slice()</code> method extracts a section of a string/list and returns a new string/list.</p>
+        <p>slice(‘lorem’ ‘ipsum’ ‘dolor’, 1, 2) slice(‘lorem’ ‘ipsum’ ‘dolor’, 1, -1) // =&gt; ‘ipsum’</p>
+        <p>slice(‘lorem ipsum’, 1, 5) // =&gt; ‘orem’ slice(rredd, 1, -1) // =&gt; #f00</p>
+        <p>slice(1px solid black, 1) // =&gt; solid #000</p>
+        <h2 id="hslacolor--hsla">hsla(color | h,s,l,a)</h2>
+        <p>Convert the given <code class="highlighter-rouge">color</code> to an <code class="highlighter-rouge">HSLA</code> node, or h,s,l,a component values.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code> hsla(10deg, 50%, 30%, 0.5)
+ // =&gt; HSLA
+
+ hsla(#ffcc00)
+ // =&gt; HSLA
+</code></pre> </div>
+        <h2 id="hslcolor--hsl">hsl(color | h,s,l)</h2>
+        <p>Convert the given <code class="highlighter-rouge">color</code> to an <code class="highlighter-rouge">HSLA</code> node, or h,s,l,a component values.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code> hsl(10, 50, 30)
+ // =&gt; HSLA
+
+ hsl(#ffcc00)
+ // =&gt; HSLA
+</code></pre> </div>
+        <h2 id="rgbacolor--rgba">rgba(color | r,g,b,a)</h2>
+        <p>Return <code class="highlighter-rouge">RGBA</code> from the r,g,b,a channels or provide a <code class="highlighter-rouge">color</code> to tweak the alpha.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>  rgba(255,0,0,0.5)
+  // =&gt; rgba(255,0,0,0.5)
+
+  rgba(255,0,0,1)
+  // =&gt; #ff0000
+
+  rgba(#ffcc00, 0.5)
+  // rgba(255,204,0,0.5)
+</code></pre> </div>
+        <p>Alternatively stylus supports the <code class="highlighter-rouge">#rgba</code> and <code class="highlighter-rouge">#rrggbbaa</code> notations as well:</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>#fc08
+// =&gt; rgba(255,204,0,0.5)
+
+#ffcc00ee
+// =&gt; rgba(255,204,0,0.9)
+</code></pre> </div>
+        <h2 id="rgbcolor--rgb">rgb(color | r,g,b)</h2>
+        <p>Return a <code class="highlighter-rouge">RGBA</code> from the r,g,b channels or cast to an <code class="highlighter-rouge">RGBA</code> node.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>rgb(255,204,0)
+// =&gt; #ffcc00
+
+rgb(#fff)
+// =&gt; #fff
+</code></pre> </div>
+        <h2 id="blendtop-bottom">blend(top[, bottom])</h2>
+        <p>Blends the given <code class="highlighter-rouge">top</code> color over the <code class="highlighter-rouge">bottom</code> one using the normal blending. The <code class="highlighter-rouge">bottom</code> argument is optional and is defaulted to <code class="highlighter-rouge">#fff</code>.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>blend(rgba(#FFF, 0.5), #000)
+// =&gt; #808080
+
+blend(rgba(#FFDE00,.42), #19C261)
+// =&gt; #7ace38
+
+blend(rgba(lime, 0.5), rgba(red, 0.25))
+// =&gt; rgba(128,128,0,0.625)
+</code></pre> </div>
+        <h2 id="lightencolor-amount">lighten(color, amount)</h2>
+        <p>Lighten the given <code class="highlighter-rouge">color</code> by <code class="highlighter-rouge">amount</code>. This function is unit-sensitive, for example supporting percentages as shown below.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>lighten(#2c2c2c, 30)
+// =&gt; #787878
+
+lighten(#2c2c2c, 30%)
+// =&gt; #393939
+</code></pre> </div>
+        <h2 id="darkencolor-amount">darken(color, amount)</h2>
+        <p>Darken the given <code class="highlighter-rouge">color</code> by <code class="highlighter-rouge">amount</code>.This function is unit-sensitive, for example supporting percentages as shown below.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>darken(#D62828, 30)
+// =&gt; #551010
+
+darken(#D62828, 30%)
+// =&gt; #961c1c
+</code></pre> </div>
+        <h2 id="desaturatecolor-amount">desaturate(color, amount)</h2>
+        <p>Desaturate the given <code class="highlighter-rouge">color</code> by <code class="highlighter-rouge">amount</code>.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>desaturate(#f00, 40%)
+// =&gt; #c33
+</code></pre> </div>
+        <h2 id="saturatecolor-amount">saturate(color, amount)</h2>
+        <p>Saturate the given <code class="highlighter-rouge">color</code> by <code class="highlighter-rouge">amount</code>.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>saturate(#c33, 40%)
+// =&gt; #f00
+</code></pre> </div>
+        <h2 id="complementcolor">complement(color)</h2>
+        <p>Gives the complementary color. Equals to spinning hue to 180deg.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>complement(#fd0cc7)
+// =&gt; #0cfd42
+</code></pre> </div>
+        <h2 id="invertcolor">invert(color)</h2>
+        <p>Inverts the color. The red, green, and blue values are inverted, while the opacity is left alone.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>invert(#d62828)
+// =&gt; #29d7d7
+</code></pre> </div>
+        <h2 id="spincolor-amount">spin(color, amount)</h2>
+        <p>Spins hue of the given <code class="highlighter-rouge">color</code> by <code class="highlighter-rouge">amount</code>.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code> spin(#ff0000, 90deg)
+ // =&gt; #80ff00
+</code></pre> </div>
+        <h2 id="grayscalecolor">grayscale(color)</h2>
+        <p>Gives the grayscale equivalent of the given color. Equals to desaturate by 100%.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>grayscale(#fd0cc7)
+// =&gt; #0cfd42
+</code></pre> </div>
+        <h2 id="mixcolor1-color2-amount">mix(color1, color2[, amount])</h2>
+        <p>Mix two colors by a given amount. The <code class="highlighter-rouge">amount</code> is optional and is defaulted to <code class="highlighter-rouge">50%</code>.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>mix(#000, #fff, 30%)
+// =&gt; #b2b2b2
+</code></pre> </div>
+        <h2 id="tintcolor-amount">tint(color, amount)</h2>
+        <p>Mix the given color with white.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>tint(#fd0cc7,66%)
+// =&gt; #feaceb
+</code></pre> </div>
+        <h2 id="shadecolor-amount">shade(color, amount)</h2>
+        <p>Mix the given color with black.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>shade(#fd0cc7,66%)
+// =&gt; #560443
+</code></pre> </div>
+        <h2 id="luminositycolor">luminosity(color)</h2>
+        <p>Returns the <a href="http://www.w3.org/TR/WCAG20/#relativeluminancedef">relative luminance</a> of the given <code class="highlighter-rouge">color</code>.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>luminosity(white)
+// =&gt; 1
+
+luminosity(#000)
+// =&gt; 0
+
+luminosity(red)
+// =&gt; 0.2126
+</code></pre> </div>
+        <h2 id="contrasttop-bottom">contrast(top[, bottom])</h2>
+        <p>Returns the <a href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/#contrast-ratiodef">contrast ratio</a> object between <code class="highlighter-rouge">top</code> and <code class="highlighter-rouge">bottom</code> colors, based on <a href="https://github.com/LeaVerou/contrast-ratio/blob/gh-pages/color.js#L108">script</a> underlying <a style="text-decoration:none" href="http://leaverou.github.io/contrast-ratio/">“<span style="text-decoration:underline">contrast ratio</span>”</a> tool by Lea Verou.</p>
+        <p>The second argument is optional and is defaulted to <code class="highlighter-rouge">#fff</code>.</p>
+        <p>The main key in the returned object is <code class="highlighter-rouge">ratio</code>, it also have <code class="highlighter-rouge">min</code> and <code class="highlighter-rouge">max</code> values that are different from the <code class="highlighter-rouge">ratio</code> only when the <code class="highlighter-rouge">bottom</code> color is transparent. In that case the <code class="highlighter-rouge">error</code> also contains an error margin.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>contrast(#000, #fff).ratio
+=&gt; 21
+contrast(#000, rgba(#FFF, 0.5))
+=&gt; { "ratio": "13.15;", "error": "-7.85", "min": "5.3", "max": "21" }
+</code></pre> </div>
+        <h2 id="transparentifytop-bottom-alpha">transparentify(top[, bottom, alpha])</h2>
+        <p>Returns the transparent version of the given <code class="highlighter-rouge">top</code> color, as if it was blend over the given <code class="highlighter-rouge">bottom</code> color (or the closest to it, if it is possible).</p>
+        <p>The second argument is optional and is defaulted to <code class="highlighter-rouge">#fff</code>.</p>
+        <p>The third argument is optional and overrides the autodetected alpha.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>transparentify(#808080)
+=&gt; rgba(0,0,0,0.5)
+
+transparentify(#414141, #000)
+=&gt; rgba(255,255,255,0.25)
+
+transparentify(#91974C, #F34949, 0.5)
+=&gt; rgba(47,229,79,0.5)
+</code></pre> </div>
+        <h2 id="unquotestr--ident">unquote(str | ident)</h2>
+        <p>Unquote the given <code class="highlighter-rouge">str</code> and returned as a <code class="highlighter-rouge">Literal</code> node.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>   unquote("sans-serif")
+   // =&gt; sans-serif
+
+   unquote(sans-serif)
+   // =&gt; sans-serif
+
+   unquote('1px / 2px')
+   // =&gt; 1px / 2px
+</code></pre> </div>
+        <h2 id="convertstr">convert(str)</h2>
+        <p>Like <code class="highlighter-rouge">unquote()</code> but tries to convert the given <code class="highlighter-rouge">str</code> to a Stylus node.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>   unit = convert('40px')
+   typeof(unit)
+   // =&gt; 'unit'
+
+   color = convert('#fff')
+   typeof(color)
+   // =&gt; 'rgba'
+
+   foo = convert('foo')
+   typeof(foo)
+   // =&gt; 'ident'
+</code></pre> </div>
+        <h2 id="sfmt-">s(fmt, …)</h2>
+        <p>The <code class="highlighter-rouge">s()</code> function is similar to <code class="highlighter-rouge">unquote()</code>, in that it returns a <code class="highlighter-rouge">Literal</code> node, however it accepts a format string much like C’s <code class="highlighter-rouge">sprintf()</code>. Currently the only specifier is <code class="highlighter-rouge">%s</code>.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>    s('bar()');
+    // =&gt; bar()
+
+    s('bar(%s)', 'baz');
+    // =&gt; bar("baz")
+
+    s('bar(%s)', baz);
+    // =&gt; bar(baz)
+
+    s('bar(%s)', 15px);
+    // =&gt; bar(15px)
+
+    s('rgba(%s, %s, %s, 0.5)', 255, 100, 50);
+    // =&gt; rgba(255, 100, 50, 0.5)
+
+    s('bar(%Z)', 15px);
+    // =&gt; bar(%Z)
+
+    s('bar(%s, %s)', 15px);
+    // =&gt; bar(15px, null)
+</code></pre> </div>
+        <p>Check out the <code class="highlighter-rouge">%</code> string operator for equivalent behaviour.</p>
+        <h2 id="basenamepath-ext">basename(path[, ext])</h2>
+        <p>Returns the basename of <code class="highlighter-rouge">path</code>, (optionally) with <code class="highlighter-rouge">ext</code> extension removed.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>basename('images/foo.png')
+// =&gt; "foo.png"
+
+basename('images/foo.png', '.png')
+// =&gt; "foo"
+</code></pre> </div>
+        <h2 id="dirnamepath">dirname(path)</h2>
+        <p>Returns the dirname of <code class="highlighter-rouge">path</code>.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>dirname('images/foo.png')
+// =&gt; "images"
+</code></pre> </div>
+        <h2 id="extnamepath">extname(path)</h2>
+        <p>Returns the filename extension of <code class="highlighter-rouge">path</code> including the dot.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>extname('images/foo.png')
+// =&gt; ".png"
+</code></pre> </div>
+        <h2 id="pathjoin">pathjoin(…)</h2>
+        <p>Peform a path join.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>pathjoin('images', 'foo.png')
+// =&gt; "images/foo.png"
+
+path = 'images/foo.png'
+ext = extname(path)
+pathjoin(dirname(path), basename(path, ext) + _thumb + ext)
+// =&gt; 'images/foo_thumb.png'
+</code></pre> </div>
+        <h2 id="called-from-property"><code class="highlighter-rouge">called-from</code> property</h2>
+        <p><code class="highlighter-rouge">called-from</code> property contains the list of the functions the current function was called from in the reverse order (the first item is the deepest function).</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>foo()
+  bar()
+
+bar()
+  baz()
+
+baz()
+  return called-from
+
+foo()
+// =&gt; bar foo
+</code></pre> </div>
+        <h2 id="current-media">current-media()</h2>
+        <p><code class="highlighter-rouge">current-media()</code> function returns the string of the current block’s <code class="highlighter-rouge">@media</code> rule or <code class="highlighter-rouge">''</code> if there is no <code class="highlighter-rouge">@media</code> above the block.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>@media only screen and (min-width: 1024px)
+  current-media()
+// =&gt; '@media (only screen and (min-width: (1024px)))'
+</code></pre> </div>
+        <h2 id="cachekeys">+cache(keys…)</h2>
+        <p><code class="highlighter-rouge">+cache</code> is a really powerful built-in function that allows you to create your own “cachable” mixins.</p>
+        <p>“Cachable mixin” is the one, that would apply its contents to the given selector on the first call, but would <code class="highlighter-rouge">@extend</code> the first call’s selector at the second call with the same params.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>size($width, $height = $width)
+  +cache('w' + $width)
+    width: $width
+  +cache('h' + $height)
+    height: $height
+
+.a
+  size: 10px 20px
+.b
+  size: 10px 2em
+.c
+  size: 1px 2em
+</code></pre> </div>
+        <p>Would yield to</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>.a,
+.b {
+  width: 10px;
+}
+.a {
+  height: 20px;
+}
+.b,
+.c {
+  height: 2em;
+}
+.c {
+  width: 1px;
+}
+</code></pre> </div>
+        <p>See how the selectors are grouped together by the used property.</p>
+        <h2 id="prefix-classesprefix">+prefix-classes(prefix)</h2>
+        <p>Stylus comes with a block mixin <code class="highlighter-rouge">prefix-classes</code> that can be used for prefixing the classes inside any given Stylus’ block. For example:</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>+prefix-classes('foo-')
+  .bar
+    width: 10px
+</code></pre> </div>
+        <p>Yields:</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>.foo-bar {
+  width: 10px;
+}
+</code></pre> </div>
+        <h2 id="lookupname">lookup(name)</h2>
+        <p>Allows to lookup a variable with a given name, passed as a string. Returns <code class="highlighter-rouge">null</code> if the variable is undefined.</p>
+        <p>Useful when you need to get a value of a variable with dynamically generated name:</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>font-size-1 = 10px
+font-size-2 = 20px
+font-size-3 = 30px
+
+for i in 1..3
+  .text-{i}
+    font-size: lookup('font-size-' + i)
+</code></pre> </div>
+        <p>Yields:</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>.text-1 {
+  font-size: 10px;
+}
+.text-2 {
+  font-size: 20px;
+}
+.text-3 {
+  font-size: 30px;
+}
+</code></pre> </div>
+        <h2 id="definename-expr-global">define(name, expr[, global])</h2>
+        <p>Allows to create or overwrite a variable with a given name, passed as a string, onto current scope (or global scope if <code class="highlighter-rouge">global</code> is true).</p>
+        <p>This bif can be useful on those cases in which you’d wish interpolation in variable names:</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>prefix = 'border'
+border = { color: #000, length: 1px, style: solid }
+
+for prop, val in border
+  define(prefix + '-' + prop, val)
+
+body
+  border: border-length border-style border-color
+</code></pre> </div>
+        <p>yields:</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>body {
+  border: 1px solid #000;
+}
+</code></pre> </div>
+        <h2 id="operateop-left-right">operate(op, left, right)</h2>
+        <p>Perform the given <code class="highlighter-rouge">op</code> on the <code class="highlighter-rouge">left</code> and <code class="highlighter-rouge">right</code> operands:</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>  op = '+'
+  operate(op, 15, 5)
+  // =&gt; 20
+</code></pre> </div>
+        <h2 id="lengthexpr">length([expr])</h2>
+        <p>Parenthesized expressions may act as tuples, the <code class="highlighter-rouge">length()</code> function returns the length of such expressions.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>length((1 2 3 4))
+// =&gt; 4
+
+length((1 2))
+// =&gt; 2
+
+length((1))
+// =&gt; 1
+
+length(())
+// =&gt; 0
+
+length(1 2 3)
+// =&gt; 3
+
+length(1)
+// =&gt; 1
+
+length()
+// =&gt; 0
+</code></pre> </div>
+        <h2 id="selector">selector()</h2>
+        <p>Returns the compiled current selector or <code class="highlighter-rouge">&amp;</code> if called at root level.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>.foo
+  selector()
+// =&gt; '.foo'
+
+.foo
+  &amp;:hover
+    selector()
+// '.foo:hover'
+</code></pre> </div>
+        <h2 id="selector-existsselector">selector-exists(selector)</h2>
+        <p>Returns true if the given selector exists.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>.foo
+  color red
+
+  a
+    font-size 12px
+
+selector-exists('.foo') // true
+selector-exists('.foo a') // true
+selector-exists('.foo li') // false
+selector-exists('.bar') // false
+</code></pre> </div>
+        <p>This method does not take into account the current context meaning:</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>.foo
+  color red
+
+  a
+    font-size 12px
+
+  selector-exists('a') // false
+  selector-exists(selector() + ' a') // true
+</code></pre> </div>
+        <h2 id="warnmsg">warn(msg)</h2>
+        <p>Warn with the given error <code class="highlighter-rouge">msg</code>, does not exit.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>  warn("oh noes!")
+</code></pre> </div>
+        <h2 id="errormsg">error(msg)</h2>
+        <p>Exits with the given error <code class="highlighter-rouge">msg</code>.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>add(a, b)
+  unless a is a 'unit' and b is a 'unit'
+    error('add() expects units')
+  a + b
+</code></pre> </div>
+        <h2 id="lastexpr">last(expr)</h2>
+        <p>Return the <em>last</em> value in the given <code class="highlighter-rouge">expr</code>:</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>  nums = 1 2 3
+  last(nums)
+  last(1 2 3)
+  // =&gt; 3
+
+  list = (one 1) (two 2) (three 3)
+  last(list)
+  // =&gt; (three 3)
+</code></pre> </div>
+        <h2 id="pexpr">p(expr)</h2>
+        <p>Inspect the given <code class="highlighter-rouge">expr</code>:</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code> fonts = Arial, sans-serif
+ p('test')
+ p(123)
+ p((1 2 3))
+ p(fonts)
+ p(#fff)
+ p(rgba(0,0,0,0.2))
+
+ add(a, b)
+   a + b
+
+ p(add)
+</code></pre> </div>
+        <p>stdout:</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code> inspect: "test"
+ inspect: 123
+ inspect: 1 2 3
+ inspect: Arial, sans-serif
+ inspect: #fff
+ inspect: rgba(0,0,0,0.2)
+ inspect: add(a, b)
+</code></pre> </div>
+        <h2 id="opposite-positionpositions">opposite-position(positions)</h2>
+        <p>Return the opposites of the given <code class="highlighter-rouge">positions</code>.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code> opposite-position(right)
+ // =&gt; left
+
+ opposite-position(top left)
+ // =&gt; bottom right
+
+ opposite-position('top' 'left')
+ // =&gt; bottom right
+</code></pre> </div>
+        <h2 id="image-sizepath">image-size(path)</h2>
+        <p>Returns the <code class="highlighter-rouge">width</code> and <code class="highlighter-rouge">height</code> of the image found at <code class="highlighter-rouge">path</code>. Lookups are performed in the same manner as <code class="highlighter-rouge">@import</code>, altered by the <code class="highlighter-rouge">paths</code> setting.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>  width(img)
+    return image-size(img)[0]
+
+  height(img)
+    return image-size(img)[1]
+
+  image-size('tux.png')
+  // =&gt; 405px 250px
+
+  image-size('tux.png')[0] == width('tux.png')
+  // =&gt; true
+</code></pre> </div>
+        <h2 id="embedurlpath-encoding">embedurl(path[, encoding])</h2>
+        <p>Returns an inline image as a <code class="highlighter-rouge">url()</code> literal, encoded with <code class="highlighter-rouge">encoding</code> (available encodings: <code class="highlighter-rouge">base64</code> (default), and <code class="highlighter-rouge">utf8</code>).</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>background: embedurl('logo.png')
+// =&gt; background: url("data:image/png;base64,…")
+
+background: embedurl('logo.svg', 'utf8')
+// =&gt; background: url("data:image/svg+xml;charset=utf-8,…")
+</code></pre> </div>
+        <h2 id="add-propertyname-expr">add-property(name, expr)</h2>
+        <p>Adds property <code class="highlighter-rouge">name</code>, with the given <code class="highlighter-rouge">expr</code> to the closest block.</p>
+        <p>For example:</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>  something()
+    add-property('bar', 1 2 3)
+    s('bar')
+
+  body
+    foo: something()
+</code></pre> </div>
+        <p>yields:</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>  body {
+    bar: 1 2 3;
+    foo: bar;
+  }
+</code></pre> </div>
+        <p>Next the “magic” <code class="highlighter-rouge">current-property</code> local variable comes into play. This variable is automatically available to function bodies, and contains an expression with the current property’s name, and value.</p>
+        <p>For example if we were to inspect this local variable using <code class="highlighter-rouge">p()</code>, we get the following:</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>    p(current-property)
+    // =&gt; "foo" (foo __CALL__ bar baz)
+
+    p(current-property[0])
+    // =&gt; "foo"
+
+    p(current-property[1])
+    // =&gt; foo __CALL__ bar baz
+</code></pre> </div>
+        <p>Using <code class="highlighter-rouge">current-property</code> we can take our example a bit further, and duplicate the property with new values, and a conditional to ensure the function is only used within a property value.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>    something(n)
+      if current-property
+        add-property(current-property[0], s('-webkit-something(%s)', n))
+        add-property(current-property[0], s('-moz-something(%s)', n))
+        s('something(%s)', n)
+      else
+        error('something() must be used within a property')
+
+    body {
+      foo: something(15px) bar;
+    }
+</code></pre> </div>
+        <p>yields:</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>    body {
+      foo: -webkit-something(15px);
+      foo: -moz-something(15px);
+      foo: something(15px) bar;
+    }
+</code></pre> </div>
+        <p>If you noticed in the example above, <code class="highlighter-rouge">bar</code> is only present for the initial call, since we returned <code class="highlighter-rouge">something(15px)</code>, it remained in-place within the expression, however the others do not take the rest of the expression into account.</p>
+        <p>Our more robust solution below, defines a function named <code class="highlighter-rouge">replace()</code> which clones the expression to prevent mutation, replaces the string value of an expression with another, and returns the cloned expression. We then move on to replace <code class="highlighter-rouge">__CALL__</code> within the expressions, which represents the cyclic call to <code class="highlighter-rouge">something()</code>.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>    replace(expr, str, val)
+      expr = clone(expr)
+      for e, i in expr
+        if str == e
+          expr[i] = val
+      expr
+
+    something(n)
+      if current-property
+        val = current-property[1]
+        webkit = replace(val, '__CALL__', s('-webkit-something(%s)', n))
+        moz = replace(val, '__CALL__', s('-moz-something(%s)', n))
+        add-property(current-property[0], webkit)
+        add-property(current-property[0], moz)
+        s('something(%s)', n)
+      else
+        error('something() must be used within a property')
+
+    body
+      foo: something(5px) bar baz
+</code></pre> </div>
+        <p>yields:</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>      body {
+        foo: -webkit-something(5px) bar baz;
+        foo: -moz-something(5px) bar baz;
+        foo: something(5px) bar baz;
+      }
+</code></pre> </div>
+        <p>Our implementation is now fully transparent both in regards to the property it is called within, and the position of the call. This powerful concept aids in transparent vendor support for function calls, such as gradients.</p>
+        <h2 id="jsonpath-options">json(path[, options])</h2>
+        <p>Convert a .json file into stylus variables or an object. Nested variable object keys are joined with a dash (-).</p>
+        <p>For example, the following sample media-queries.json file:</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nt">"small"</span><span class="p">:</span><span class="w"> </span><span class="s2">"screen and (max-width:400px)"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"tablet"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"landscape"</span><span class="p">:</span><span class="w"> </span><span class="s2">"screen and (min-width:600px) and (orientation:landscape)"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"portrait"</span><span class="p">:</span><span class="w"> </span><span class="s2">"screen and (min-width:600px) and (orientation:portrait)"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre> </div>
+        <p>May be used in the following ways:</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>json('media-queries.json')
+
+@media small
+// =&gt; @media screen and (max-width:400px)
+
+@media tablet-landscape
+// =&gt; @media screen and (min-width:600px) and (orientation:landscape)
+
+vars = json('vars.json', { hash: true })
+body
+  width: vars.width
+
+vars = json('vars.json', { hash: true, leave-strings: true })
+typeof(vars.icon)
+// =&gt; 'string'
+
+// don't throw an error if the JSON file doesn't exist
+optional = json('optional.json', { hash: true, optional: true })
+typeof(optional)
+// =&gt; 'null'
+</code></pre> </div>
+        <h2 id="usepath">use(path)</h2>
+        <p>You can use any given js-plugin at given <code class="highlighter-rouge">path</code> with <code class="highlighter-rouge">use()</code> function right inside your ‘.styl’ files, like this:</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>use("plugins/add.js")
+
+width add(10, 100)
+// =&gt; width: 110
+</code></pre> </div>
+        <p>And the <code class="highlighter-rouge">add.js</code> plugin in this case looks this way:</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>var plugin = function(){
+  return function(style){
+    style.define('add', function(a, b) {
+      return a.operate('+', b);
+    });
+  };
+};
+module.exports = plugin;
+</code></pre> </div>
+        <p>If you’d like to return any Stylus objects like <code class="highlighter-rouge">RGBA</code>, <code class="highlighter-rouge">Ident</code> or <code class="highlighter-rouge">Unit</code>, you could use the provided Stylus nodes like this:</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>var plugin = function(){
+  return function(style){
+    var nodes = this.nodes;
+    style.define('something', function() {
+      return new nodes.Ident('foobar');
+    });
+  };
+};
+module.exports = plugin;
+</code></pre> </div>
+        <p>You can pass any options as an optional second argument, using the hash object:</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>use("plugins/add.js", { foo: bar })
+</code></pre> </div>
+        <h2 id="undefined-functions">Undefined Functions</h2>
+        <p>Undefined functions will output as literals, so for example we may call <code class="highlighter-rouge">rgba-stop(50%, #fff)</code> within our css, and it will output as you would expect. We can use this within helpers as well.</p>
+        <p>In the example below we simply define the function <code class="highlighter-rouge">stop()</code> which returns the literal <code class="highlighter-rouge">rgba-stop()</code> call.</p>
+        <div class="highlighter-rouge"><pre class="highlight"><code>stop(pos, rgba)
+  rgba-stop(pos, rgba)
+
+stop(50%, orange)
+// =&gt; rgba-stop(50%, #ffa500)
+</code></pre> </div>
+    </div>
+</main>

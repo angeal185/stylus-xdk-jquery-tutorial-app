@@ -1,0 +1,77 @@
+<main class="content">
+    <div class="docs">
+        <h1>Connect Middleware</h1>
+<p>Stylus ships with <a href="http://www.senchalabs.org/connect/">Connect</a> middleware for auto-compiling Stylus sheets whenever they’re modified.</p>
+
+<h2 id="stylusmiddlewareoptions">stylus.middleware(options)</h2>
+
+<h3 id="options">Options</h3>
+
+<p>Return Connect middleware with the given <code class="highlighter-rouge">options</code>.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>  `serve`     Serve the stylus files from `dest` [true]
+  `force`     Always re-compile
+  `src`       Source directory used to find .styl files
+  `dest`      Destination directory used to output .css files
+              when undefined defaults to `src`.
+  `compile`   Custom compile function, accepting the arguments
+              `(str, path)`.
+  `compress`  Whether the output .css files should be compressed
+  `firebug`   Emits debug infos in the generated css that can
+              be used by the FireStylus Firebug plugin
+  `linenos`   Emits comments in the generated css indicating 
+              the corresponding stylus line
+  `sourcemap` Generates a sourcemap in sourcemaps v3 format
+</code></pre>
+</div>
+
+<h3 id="examples">Examples</h3>
+
+<p>Serve .styl files from ./public:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var app = connect();
+
+app.middleware(__dirname + '/public');
+</code></pre>
+</div>
+
+<p>Change the <code class="highlighter-rouge">src</code> and <code class="highlighter-rouge">dest</code> options to alter where .styl files
+ are loaded and where they’re saved:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> var app = connect();
+ 
+ app.middleware({
+   src: __dirname + '/stylesheets',
+   dest: __dirname + '/public'
+ });
+</code></pre>
+</div>
+
+<p>Here we set up the custom compile function so that we may
+ set the <code class="highlighter-rouge">compress</code> option, or define additional functions.</p>
+
+<p>By default the compile function simply sets the <code class="highlighter-rouge">filename</code>
+ and renders the CSS. In the following case we’re compressing
+ the output, using the “nib” library plugin, and auto-importing it.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> function compile(str, path) {
+   return stylus(str)
+     .set('filename', path)
+     .set('compress', true)
+     .use(nib())
+     .import('nib');
+ }
+</code></pre>
+</div>
+
+<p>Pass it as an option like so:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> var app = connect();
+
+ app.middleware({
+     src: __dirname
+   , dest: __dirname + '/public'
+   , compile: compile
+ })
+</code></pre>
+</div></div></main>

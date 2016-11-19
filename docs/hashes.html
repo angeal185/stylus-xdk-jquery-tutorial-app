@@ -1,0 +1,180 @@
+<main class="content">
+	<div class="docs">
+		<h1>Hashes</h1>
+<p>In <code class="highlighter-rouge">0.39.0</code> version Stylus got hash objects.</p>
+
+<h2 id="define">Define</h2>
+
+<p>You can define a hash using the curly braces and colons to divide the keys and values:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>foo = {
+  bar: baz,
+  baz: raz
+}
+</code></pre>
+</div>
+
+<p>the keys should be either proper idents or strings:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>foo = {
+  bar: baz,
+  'baz': raz,
+  '0': raz
+}
+</code></pre>
+</div>
+
+<p>When you already have a hash, you can set its values using brackets and strings inside:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>foo = {}
+foo['bar'] = baz
+foo['baz'] = raz
+</code></pre>
+</div>
+
+<p>Note that while you can’t use variables or interpolations in curly braces defines, you can use variables inside brackets:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>foo = {}
+bar = 'baz'
+foo[bar] = raz
+
+foo.baz
+// =&gt; raz
+</code></pre>
+</div>
+
+<h2 id="getters">Getters</h2>
+
+<p>For retrieving values from hashes you can use the dot for idents:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>foo = { bar: "baz" }
+
+foo.bar
+// =&gt; "baz"
+</code></pre>
+</div>
+
+<p>Or brackets with strings for anything:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>foo = { "%": 10 }
+baz = "%"
+
+foo[baz]
+// =&gt; 10
+</code></pre>
+</div>
+
+<p>You can use any combinations you want:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>foo = {
+  bar: {
+    baz: {
+      raz: 10px
+    }
+  }
+}
+
+qux = "raz"
+foo["bar"].baz[qux]
+// =&gt; 10px
+</code></pre>
+</div>
+
+<h2 id="interpolation">Interpolation</h2>
+
+<p>Hashes used inside an interpolation would output the content of the hashes as CSS (without almost any Stylus features though):</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>foo = {
+  width: 10px,
+  height: 20px,
+  '&amp;:hover': {
+    padding: 0
+
+  }
+}
+
+.bar
+  {foo}
+
+// =&gt; .bar {
+//      width: 10px;
+//      height: 20px;
+//    }
+//    .bar:hover {
+//      padding: 0;
+//    }
+</code></pre>
+</div>
+
+<h2 id="other-stuff">Other stuff</h2>
+
+<p>You can use other normal Stylus stuff with hashes, like <code class="highlighter-rouge">length()</code>:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>foo = { bar: 'a', baz: 'b' }
+
+length(foo)
+// =&gt; 2
+</code></pre>
+</div>
+
+<p>You can iterate through hashes with optional key param:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>foo = { width: 10px, height: 20px }
+
+for key, value in foo
+  {key}: value
+
+// =&gt; width: 10px;
+//    height: 20px;
+</code></pre>
+</div>
+
+<p>You can check existence of a key in hash using <code class="highlighter-rouge">in</code>:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>foo = { bar: 10px}
+
+bar in foo
+// =&gt; true
+
+baz in foo
+// =&gt; false
+</code></pre>
+</div>
+
+<p>You can get keys or values of the hash using corresponding bifs:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>foo = { bar: 'a', baz: 'b' }
+
+keys(foo)
+// =&gt; 'bar' 'baz'
+
+values(foo)
+// =&gt; 'a' 'b'
+</code></pre>
+</div>
+
+<p>You can remove a key from the hash using <code class="highlighter-rouge">remove</code> bif:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>obj = { foo: 1, bar: 2 }
+remove(obj, 'foo')
+// =&gt; {"bar":"(2)"}
+</code></pre>
+</div>
+
+<p>And you can use <code class="highlighter-rouge">merge</code> (aliased as <code class="highlighter-rouge">extend</code>) to merge hashes:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>obj = {
+  foo: 'foo'
+  bar: 'bar'
+}
+
+obj2 = {
+  baz: 'baz'
+}
+
+merge(obj, obj2)
+// =&gt; {"foo":"('foo')","bar":"('bar')","baz":"('baz')"}
+</code></pre>
+</div>
+</div>
+</main>

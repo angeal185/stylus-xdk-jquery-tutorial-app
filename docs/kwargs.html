@@ -1,0 +1,41 @@
+<main class="content">
+    <div class="docs">
+        <h1>Keyword Arguments</h1>
+<p>Stylus supports keyword arguments, or “kwargs”. These allow you to reference arguments by their associated parameter name.</p>
+
+<p>The examples shown below are functionally equivalent. However, we can
+ place keyword arguments anywhere within the list. The remaining arguments
+ that are <em>not</em> keyed will be applied to the parameters that have not
+ been satisfied.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>  body {
+    color: rgba(255, 200, 100, 0.5);
+    color: rgba(red: 255, green: 200, blue: 100, alpha: 0.5);
+    color: rgba(alpha: 0.5, blue: 100, red: 255, 200);
+    color: rgba(alpha: 0.5, blue: 100, 255, 200);
+  }
+</code></pre>
+</div>
+
+<p>Yielding:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>   body {
+     color: rgba(255,200,100,0.5);
+     color: rgba(255,200,100,0.5);
+     color: rgba(255,200,100,0.5);
+     color: rgba(255,200,100,0.5);
+   }
+</code></pre>
+</div>
+
+<p>To see what parameters a function or mixin accept, use the <code class="highlighter-rouge">p()</code> function:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>p(rgba)
+</code></pre>
+</div>
+
+<p>Yielding:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>inspect: rgba(red, green, blue, alpha)
+</code></pre>
+</div></div></main>

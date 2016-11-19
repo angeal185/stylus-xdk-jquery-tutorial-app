@@ -1,0 +1,82 @@
+<main class="content">
+    <div class="docs">
+        <h1>Interpolation</h1>
+<p>Stylus supports interpolation by using the <code class="highlighter-rouge"><span class="p">{}</span></code> characters to surround an expression, which then becomes part of the identifier. For example, <code class="highlighter-rouge">-webkit-{'border' + '-radius'}</code> evaluates to <code class="highlighter-rouge">-webkit-border-radius</code>.</p>
+
+<p>A great example use-case for this is expanding properties with vendor prefixes.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>  vendor(prop, args)
+    -webkit-{prop} args
+    -moz-{prop} args
+    {prop} args
+
+  border-radius()
+    vendor('border-radius', arguments)
+  
+  box-shadow()
+    vendor('box-shadow', arguments)
+
+  button
+    border-radius 1px 2px / 3px 4px
+</code></pre>
+</div>
+
+<p>Yields:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>  button {
+    -webkit-border-radius: 1px 2px / 3px 4px;
+    -moz-border-radius: 1px 2px / 3px 4px;
+    border-radius: 1px 2px / 3px 4px;
+  }
+</code></pre>
+</div>
+
+<h2 id="selector-interpolation">Selector Interpolation</h2>
+
+<p>Interpolation works with selectors as well. For example, we may iterate to assign the <code class="highlighter-rouge">height</code> property for the first 5 rows in a table, as shown below:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>table
+  for row in 1 2 3 4 5
+    tr:nth-child({row})
+      height: 10px * row
+</code></pre>
+</div>
+
+<p>Yields:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>table tr:nth-child(1) {
+  height: 10px;
+}
+table tr:nth-child(2) {
+  height: 20px;
+}
+table tr:nth-child(3) {
+  height: 30px;
+}
+table tr:nth-child(4) {
+  height: 40px;
+}
+table tr:nth-child(5) {
+  height: 50px;
+}
+</code></pre>
+</div>
+
+<p>You may also put together multiple selectors into one variable by building a string and interpolate them in place:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>mySelectors = '#foo,#bar,.baz'
+
+{mySelectors}
+  background: #000
+</code></pre>
+</div>
+
+<p>Yields:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>#foo,
+#bar,
+.baz {
+  background: #000;
+}
+</code></pre>
+</div></div></main>

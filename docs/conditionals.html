@@ -1,0 +1,121 @@
+<main class="content">
+	<div class="docs">
+		<h1>Conditionals</h1>
+<p>Conditionals provide control flow to a language which is otherwise static, providing conditional imports, mixins, functions, and more. The examples below are simply examples, and not recommended :)</p>
+
+<h2 id="if--else-if--else">if / else if / else</h2>
+
+<p>The <code class="highlighter-rouge">if</code> conditional works as you would expect, simply accepting an expression, evaluating the following block when <code class="highlighter-rouge">true</code>. Along with <code class="highlighter-rouge">if</code> are the typical <code class="highlighter-rouge">else if</code> and <code class="highlighter-rouge">else</code> tokens, acting as fallbacks.</p>
+
+<p>The example below would conditionally overload the <code class="highlighter-rouge">padding</code> property, swapping it for <code class="highlighter-rouge">margin</code>.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>overload-padding = true
+
+if overload-padding
+  padding(y, x)
+    margin y x
+
+body
+  padding 5px 10px
+</code></pre>
+</div>
+
+<p>Another example:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>box(x, y, margin = false)
+  padding y x
+  if margin
+    margin y x
+
+body
+  box(5px, 10px, true)
+</code></pre>
+</div>
+
+<p>Another <code class="highlighter-rouge">box()</code> helper:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>box(x, y, margin-only = false)
+  if margin-only
+    margin y x
+  else
+    padding y x
+</code></pre>
+</div>
+
+<h2 id="unless">unless</h2>
+
+<p>For users familiar with the Ruby programming language, we have the <code class="highlighter-rouge">unless</code> conditional. It’s basically the opposite of <code class="highlighter-rouge">if</code>—essentially <code class="highlighter-rouge">if (!(expr))</code>.</p>
+
+<p>In the example below, if <code class="highlighter-rouge">disable-padding-override</code> is <code class="highlighter-rouge">undefined</code> or <code class="highlighter-rouge">false</code>, <code class="highlighter-rouge">padding</code> will be overridden, displaying <code class="highlighter-rouge">margin</code> instead. But if it’s <code class="highlighter-rouge">true</code>, <code class="highlighter-rouge">padding</code> will continue outputting <code class="highlighter-rouge">padding 5px 10px</code> as expected.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> disable-padding-override = true
+
+ unless disable-padding-override is defined and disable-padding-override
+   padding(x, y)
+     margin y x
+
+ body
+   padding 5px 10px
+</code></pre>
+</div>
+
+<h2 id="postfix-conditionals"></a>Postfix Conditionals</h2>
+
+<p>Stylus supports postfix conditionals. This means that <code class="highlighter-rouge">if</code> and <code class="highlighter-rouge">unless</code> act as operators; they evaluate the left-hand operand when the right-hand expression is truthy.</p>
+
+<p>For example let’s define <code class="highlighter-rouge">negative()</code> to perform some basic type checking. Below we use block-style conditionals:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>  negative(n)
+    unless n is a 'unit'
+      error('invalid number')
+    if n &lt; 0
+      yes
+    else
+      no
+</code></pre>
+</div>
+
+<p>Next, we utilize postfix conditionals to keep our function terse.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>  negative(n)
+    error('invalid number') unless n is a 'unit'
+    return yes if n &lt; 0
+    no
+</code></pre>
+</div>
+
+<p>Of course, we could take this further.  For example, we could write <code class="highlighter-rouge">n &lt; 0 ? yes : no</code>, or simply stick with booleans: <code class="highlighter-rouge">n &lt; 0</code>.</p>
+
+<p>Postfix conditionals may be applied to most single-line statements. For example, <code class="highlighter-rouge">@import</code>, <code class="highlighter-rouge">@charset</code>, mixins—and of course, properties as shown below:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>  pad(types = margin padding, n = 5px)
+    padding unit(n, px) if padding in types
+    margin unit(n, px) if margin in types
+
+  body
+    pad()
+
+  body
+    pad(margin)
+
+  body
+    apply-mixins = true
+    pad(padding, 10) if apply-mixins
+</code></pre>
+</div>
+
+<p>yielding:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>  body {
+    padding: 5px;
+    margin: 5px;
+  }
+  body {
+    margin: 5px;
+  }
+  body {
+    padding: 10px;
+  }
+</code></pre>
+</div></div>
+</main>

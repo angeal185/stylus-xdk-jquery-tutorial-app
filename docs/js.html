@@ -1,0 +1,226 @@
+<main class="content">
+   <div class="docs">
+     <h1>JavaScript API</h1>
+<p>Simply <code class="highlighter-rouge">require</code> the module, and call <code class="highlighter-rouge">render()</code> with the given string of Stylus code, and (optional) <code class="highlighter-rouge">options</code> object.</p>
+
+<p>Frameworks utilizing Stylus should pass the <code class="highlighter-rouge">filename</code> option to provide better error reporting.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var stylus = require('stylus');
+
+stylus.render(str, { filename: 'nesting.css' }, function(err, css){
+  if (err) throw err;
+  console.log(css);
+});
+</code></pre>
+</div>
+
+<p>We can also do the same thing in a more progressive manner:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var stylus = require('stylus');
+
+stylus(str)
+  .set('filename', 'nesting.css')
+  .render(function(err, css){
+    // logic
+  });
+</code></pre>
+</div>
+
+<h2 id="setsetting-value">.set(setting, value)</h2>
+
+<p>Apply a setting such as a <code class="highlighter-rouge">filename</code>, or import <code class="highlighter-rouge">paths</code>:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> .set('filename', __dirname + '/test.styl')
+ .set('paths', [__dirname, __dirname + '/mixins'])
+</code></pre>
+</div>
+
+<h2 id="includepath">.include(path)</h2>
+
+<p>A progressive alternative to <code class="highlighter-rouge">.set('paths',...)</code> is <code class="highlighter-rouge">.include()</code>.  This is ideal when exposing external Stylus libraries which expose a path.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>stylus(str)
+  .include(require('nib').path)
+  .include(process.env.HOME + '/mixins')
+  .render(...)
+</code></pre>
+</div>
+
+<h2 id="importpath">.import(path)</h2>
+
+<p>Defer importing of the given <code class="highlighter-rouge">path</code> until evaluation is performed. The example below is essentially the same as doing <code class="highlighter-rouge">@import 'mixins/vendor'</code> within your Stylus sheet.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>  var stylus = require('../')
+    , str = require('fs').readFileSync(__dirname + '/test.styl', 'utf8');
+
+  stylus(str)
+    .set('filename', __dirname + '/test.styl')
+    .import('mixins/vendor')
+    .render(function(err, css){
+    if (err) throw err;
+    console.log(css);
+  });
+</code></pre>
+</div>
+
+<h2 id="definename-node">.define(name, node)</h2>
+
+<p>By passing a <code class="highlighter-rouge">Node</code>, we may define a global variable. This is useful when exposing conditional features within your library depending on the availability of another. For example the <strong>Nib</strong> extension library conditionally supports node-canvas, providing image generation.</p>
+
+<p>However, this is not always available, so Nib may define:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> .define('has-canvas', stylus.nodes.false);
+ .define('some-setting', new stylus.nodes.String('some value'));
+</code></pre>
+</div>
+
+<p>Stylus also casts JavaScript values to their Stylus equivalents when possible. Here are a few examples:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> .define('string', 'some string')
+ .define('number', 15.5)
+ .define('some-bool', true)
+ .define('list', [1,2,3])
+ .define('list', [1,2,[3,4,[5,6]]])
+ .define('list', { foo: 'bar', bar: 'baz' })
+ .define('families', ['Helvetica Neue', 'Helvetica', 'sans-serif'])
+</code></pre>
+</div>
+
+<p>These same rules apply to return values in js functions as well:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> .define('get-list', function(){
+   return ['foo', 'bar', 'baz'];
+ })
+</code></pre>
+</div>
+
+<h2 id="definename-fn">.define(name, fn)</h2>
+
+<p>This method allows you to provide a JavaScript-defined function to Stylus. Think of these as you would JavaScript-to-C++ bindings. When there’s something you cannot do in Stylus, define it in JavaScript!</p>
+
+<p>In this example, we define four functions: <code class="highlighter-rouge">add()</code>, <code class="highlighter-rouge">sub()</code>, <code class="highlighter-rouge">image-width()</code>, and <code class="highlighter-rouge">image-height()</code>. These functions must return a <code class="highlighter-rouge">Node</code>, this constructor and the other nodes are available via <code class="highlighter-rouge">stylus.nodes</code>.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>  var stylus = require('../')
+    , nodes = stylus.nodes
+    , utils = stylus.utils
+    , fs = require('fs');
+
+  function add(a, b) {
+    return a.operate('+', b);
+  }
+
+  function sub(a, b) {
+    return a.operate('-', b);
+  }
+
+  function imageDimensions(img) {
+    // assert that the node (img) is a String node, passing
+    // the param name for error reporting
+    utils.assertType(img, 'string', 'img');
+    var path = img.val;
+
+    // Grab bytes necessary to retrieve dimensions.
+    // if this was real you would do this per format,
+    // instead of reading the entire image :)
+    var data = fs.readFileSync(__dirname + '/' + path);
+
+    // GIF
+    // of course you would support.. more :)
+    if ('GIF' == data.slice(0, 3).toString()) {
+      var w = data.slice(6, 8)
+        , h = data.slice(8, 10);
+      w = w[1] &lt;&lt; 8 | w[0];
+      h = h[1] &lt;&lt; 8 | h[0];
+    }
+
+    return [w, h];
+  }
+
+  function imageWidth(img) {
+    return new nodes.Unit(imageDimensions(img)[0]);
+  }
+
+  function imageHeight(img) {
+    return new nodes.Unit(imageDimensions(img)[1]);
+  }
+
+  stylus(str)
+    .set('filename', 'js-functions.styl')
+    .define('add', add)
+    .define('sub', sub)
+    .define('image-width', imageWidth)
+    .define('image-height', imageHeight)
+    .render(function(err, css){
+      if (err) throw err;
+      console.log(css);
+    });
+</code></pre>
+</div>
+
+<p>For further reference (until documentation is complete) please see the following files:</p>
+
+<ul>
+  <li><code class="highlighter-rouge">lib/nodes/*</code></li>
+  <li><code class="highlighter-rouge">lib/utils.js</code></li>
+</ul>
+
+<h2 id="usefn"></a>.use(fn)</h2>
+
+<p>When called, the given <code class="highlighter-rouge">fn</code> is invoked with the renderer, allowing all of the methods above to be used. This allows for plugins to easily expose themselves, defining functions, paths etc.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var mylib = function(style){
+  style.define('add', add);
+  style.define('sub', sub);
+};
+
+stylus(str)
+  .use(mylib)
+  .render(...)
+</code></pre>
+</div>
+
+<p>When calling the <code class="highlighter-rouge">render()</code> method with options, the <code class="highlighter-rouge">use</code> option can be given
+  a function or array of functions to be invoked with the renderer.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>stylus.render(str, { use: mylib }, function(err, css){
+  if (err) throw err;
+  console.log(css);
+});
+</code></pre>
+</div>
+
+<h2 id="deps">.deps()</h2>
+
+<p>Returns array of dependencies (import files):</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>  stylus('@import "a"; @import "b"')
+    .deps();
+
+  // =&gt; ['a.styl', 'b.styl']
+</code></pre>
+</div>
+
+<p>See also –deps CLI
+  flag</a>.</p>
+
+<h2 id="stylusresolveroptions"></a>stylus.resolver([options])</h2>
+
+<p>Optional built-in function which may be used to resolve relative urls inside imported files:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>  stylus(str)
+    .define('url', stylus.resolver())
+    .render(function(err, css) {
+
+    });
+</code></pre>
+</div>
+
+<p>See also –resolve-url CLI
+  flag</a>.</p>
+
+<p>Options:</p>
+
+<ul>
+  <li><code class="highlighter-rouge">paths</code> additional resolution path(s)</li>
+  <li><code class="highlighter-rouge">nocheck</code> don’t check file existence</li>
+</ul></div></main>

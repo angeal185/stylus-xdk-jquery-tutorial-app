@@ -1,0 +1,282 @@
+<main class="content">
+	<div class="docs">
+		<h1>Functions</h1>
+<p>Stylus features powerful in-language function definitions. Function definitions appear identical to mixins; however, functions may return a value.</p>
+
+<h2 id="return-values">Return Values</h2>
+
+<p>Let’s try a trivial example: creating a function that adds two numbers.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>add(a, b)
+  a + b
+</code></pre>
+</div>
+
+<p>We can then use this function in conditions, in property values, etc.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> body 
+   padding add(10px, 5)
+</code></pre>
+</div>
+
+<p>Rendering:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> body {
+   padding: 15px;
+ }
+</code></pre>
+</div>
+
+<h2 id="argument-defaults">Argument Defaults</h2>
+
+<p>Optional arguments may default to a given expression. With Stylus we may even default arguments to earlier arguments!</p>
+
+<p>For example:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> add(a, b = a)
+   a + b
+
+ add(10, 5)
+ // =&gt; 15
+ 
+ add(10)
+ // =&gt; 20
+</code></pre>
+</div>
+
+<p><strong>Note:</strong> Since argument defaults are assignments, we can also use function calls for defaults:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> add(a, b = unit(a, px))
+   a + b
+</code></pre>
+</div>
+
+<h2 id="named-parameters">Named Parameters</h2>
+
+<p>Functions accept named parameters. This frees you from remembering the order of parameters, or simply improves the readability of your code.</p>
+
+<p>For example:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>subtract(a, b)
+  a - b
+
+subtract(b: 10, a: 25)
+</code></pre>
+</div>
+
+<h2 id="function-bodies">Function Bodies</h2>
+
+<p>We can take our simple <code class="highlighter-rouge">add()</code> function further. Let’s casting all units passed as <code class="highlighter-rouge">px</code> via the <code class="highlighter-rouge">unit()</code> built-in. It reassigns each argument, and provides a unit-type string (or identifier), which ignores unit conversion.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> add(a, b = a)
+   a = unit(a, px)
+   b = unit(b, px)
+   a + b
+
+ add(15%, 10deg)
+ // =&gt; 25
+</code></pre>
+</div>
+
+<h2 id="multiple-return-values">Multiple Return Values</h2>
+
+<p>Stylus functions can return several values—just as you can assign several values to a variable.</p>
+
+<p>For example, the following is a valid assignment:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>   sizes = 15px 10px
+ 
+   sizes[0]
+   // =&gt; 15px 
+</code></pre>
+</div>
+
+<p>Similarly, we may return several values:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>   sizes()
+     15px 10px
+
+   sizes()[0]
+   // =&gt; 15px
+</code></pre>
+</div>
+
+<p>One slight exception is when return values are identifiers. For example, the following looks like a property assignment to Stylus (since no operators are present):</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> swap(a, b)
+   b a
+</code></pre>
+</div>
+
+<p>To disambiguate, we can either wrap with parentheses, or use the <code class="highlighter-rouge">return</code> keyword:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>  swap(a, b)
+    (b a)
+
+  swap(a, b)
+    return b a
+</code></pre>
+</div>
+
+<h2 id="conditionals">Conditionals</h2>
+
+<p>Let’s say we want to create a function named <code class="highlighter-rouge">stringish()</code> to determine whether the argument can be transformed to a string. We check if <code class="highlighter-rouge">val</code> is a string, or an ident (which is string-like). Because undefined identifiers yield themselves as the value, we may compare them to themselves as shown below (where <code class="highlighter-rouge">yes</code> and <code class="highlighter-rouge">no</code> are used in place of <code class="highlighter-rouge">true</code> and <code class="highlighter-rouge">false</code>):</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> stringish(val)
+   if val is a 'string' or val is a 'ident'
+     yes
+   else
+     no
+</code></pre>
+</div>
+
+<p>Usage:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> stringish('yay') == yes
+ // =&gt; true
+   
+ stringish(yay) == yes
+ // =&gt; true
+   
+ stringish(0) == no
+ // =&gt; true
+</code></pre>
+</div>
+
+<p><strong>note</strong>: <code class="highlighter-rouge">yes</code> and <code class="highlighter-rouge">no</code> are not boolean literals. They are simply undefined identifiers in this case.</p>
+
+<p>Another example:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>compare(a, b)
+  if a &gt; b
+    higher
+  else if a &lt; b
+    lower
+  else
+    equal
+</code></pre>
+</div>
+
+<p>Usage:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>compare(5, 2)
+// =&gt; higher
+
+compare(1, 5)
+// =&gt; lower
+
+compare(10, 10)
+// =&gt; equal
+</code></pre>
+</div>
+
+<h2 id="aliasing">Aliasing</h2>
+
+<p>To alias a function, simply assign a function’s name to a new identifier. For example, our <code class="highlighter-rouge">add()</code> function could be aliased as <code class="highlighter-rouge">plus()</code>, like so:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>  plus = add
+  
+  plus(1, 2)
+  // =&gt; 3
+</code></pre>
+</div>
+
+<h2 id="variable-functions">Variable Functions</h2>
+
+<p>In the same way that we can “alias” a function, we can pass a function as well. Here, our <code class="highlighter-rouge">invoke()</code> function accepts a function, so we can pass it <code class="highlighter-rouge">add()</code> or <code class="highlighter-rouge">sub()</code>.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>add(a, b)
+  a + b
+
+sub(a, b)
+  a - b
+
+invoke(a, b, fn)
+  fn(a, b)
+
+body
+  padding invoke(5, 10, add)
+  padding invoke(5, 10, sub)
+</code></pre>
+</div>
+
+<p>Yielding:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>body {
+  padding: 15;
+  padding: -5;
+}
+</code></pre>
+</div>
+
+<h2 id="anonymous-functions">Anonymous functions</h2>
+
+<p>You can use anonymous functions where needed using <code class="highlighter-rouge">@(){}</code> syntax. Here is how you could use it to create a custom <code class="highlighter-rouge">sort()</code> function:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>sort(list, fn = null)
+  // default sort function
+  if fn == null
+    fn = @(a, b) {
+      a &gt; b
+    }
+
+  // bubble sort
+  for $i in 1..length(list) - 1
+    for $j in 0..$i - 1
+      if fn(list[$j], list[$i])
+        $temp = list[$i]
+        list[$i] = list[$j]
+        list[$j] = $temp
+  return list
+
+  sort('e' 'c' 'f' 'a' 'b' 'd')
+  // =&gt; 'a' 'b' 'c' 'd' 'e' 'f'
+
+  sort(5 3 6 1 2 4, @(a, b){
+    a &lt; b
+  })
+  // =&gt; 6 5 4 3 2 1
+</code></pre>
+</div>
+
+<h2 id="arguments">arguments</h2>
+
+<p>The <code class="highlighter-rouge">arguments</code> local is available to all function bodies, and contains all the arguments passed.</p>
+
+<p>For example:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> sum()
+   n = 0
+   for num in arguments
+     n = n + num
+
+ sum(1,2,3,4,5)
+ // =&gt; 15
+</code></pre>
+</div>
+
+<h2 id="hash-example">Hash Example</h2>
+
+<p>Below we define the <code class="highlighter-rouge">get(hash, key)</code> function, which returns the
+ value of <code class="highlighter-rouge">key</code> (or <code class="highlighter-rouge">null</code>). We iterate each <code class="highlighter-rouge">pair</code> in <code class="highlighter-rouge">hash</code>, returning the pair’s second node when the first (the <code class="highlighter-rouge">key</code>) matches.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>  get(hash, key)
+    return pair[1] if pair[0] == key for pair in hash
+</code></pre>
+</div>
+
+<p>As demonstrated below, in-language functions—paired with robust Stylus expressions—can provide great flexibility:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>  hash = (one 1) (two 2) (three 3)
+  
+  get(hash, two)
+  // =&gt; 2
+
+  get(hash, three)
+  // =&gt; 3
+
+  get(hash, something)
+  // =&gt; null
+</code></pre>
+</div></div>
+</main>
